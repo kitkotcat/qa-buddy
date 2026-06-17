@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "title": "Login / Registration Checklist",
+    "category": "Authentication",
+    "items": [
+      "Verify that user can open the login page",
+      "Verify that user can log in with valid email and password",
+      "Verify validation for empty email field",
+      "Verify validation for empty password field",
+      "Verify validation for invalid email format",
+      "Verify error message for incorrect password",
+      "Verify that password is hidden by default",
+      "Verify show/hide password button if it exists",
+      "Verify that user can log out",
+      "Verify registration with valid data",
+      "Verify registration with already used email",
+      "Verify required fields on registration form"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Search Checklist",
+    "category": "Search",
+    "items": [
+      "Verify search with valid keyword",
+      "Verify search with empty input",
+      "Verify search with one character",
+      "Verify search with special characters",
+      "Verify search with numbers",
+      "Verify search with non-existing keyword",
+      "Verify that search results are relevant",
+      "Verify that search results can be opened",
+      "Verify that search input can be cleared",
+      "Verify search performance for common queries"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Cart Checklist",
+    "category": "E-commerce",
+    "items": [
+      "Verify that user can add product to cart",
+      "Verify that cart counter updates after adding product",
+      "Verify that user can open cart",
+      "Verify that product name, price and quantity are displayed correctly",
+      "Verify that user can increase product quantity",
+      "Verify that user can decrease product quantity",
+      "Verify that user can remove product from cart",
+      "Verify that total price is recalculated correctly",
+      "Verify empty cart state",
+      "Verify that cart data is saved after page reload"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Checkout Checklist",
+    "category": "E-commerce",
+    "items": [
+      "Verify that user can open checkout page",
+      "Verify required fields validation",
+      "Verify validation for phone field",
+      "Verify validation for email field",
+      "Verify address field validation",
+      "Verify delivery method selection",
+      "Verify payment method selection",
+      "Verify order summary data",
+      "Verify successful order creation",
+      "Verify error handling when required data is missing"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "API Testing Checklist",
+    "category": "API",
+    "items": [
+      "Verify status code for successful request",
+      "Verify response body structure",
+      "Verify required fields in response",
+      "Verify response data types",
+      "Verify validation for empty request body",
+      "Verify validation for invalid field values",
+      "Verify error response format",
+      "Verify authentication if endpoint requires token",
+      "Verify unsupported HTTP method",
+      "Verify response time"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Forms Validation Checklist",
+    "category": "Validation",
+    "items": [
+      "Verify required fields",
+      "Verify minimum length validation",
+      "Verify maximum length validation",
+      "Verify invalid characters",
+      "Verify spaces-only input",
+      "Verify email format validation",
+      "Verify phone number validation",
+      "Verify error messages text",
+      "Verify that errors disappear after valid input",
+      "Verify submit button behavior"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Mobile App Checklist",
+    "category": "Mobile",
+    "items": [
+      "Verify first app launch",
+      "Verify app navigation",
+      "Verify screen orientation behavior",
+      "Verify behavior after app minimization",
+      "Verify behavior after app reopening",
+      "Verify offline mode",
+      "Verify slow internet behavior",
+      "Verify push notifications if available",
+      "Verify permissions behavior",
+      "Verify app stability after repeated actions"
+    ]
+  }
+]
