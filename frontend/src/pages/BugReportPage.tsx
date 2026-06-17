@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { generateBugReportApi } from "../api/bugReports";
 
 type BugReportForm = {
   projectName: string;
@@ -34,6 +35,7 @@ function BugReportPage() {
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (
     event:
@@ -65,16 +67,14 @@ function BugReportPage() {
     return requiredFields.every((field) => field.trim().length > 0);
   };
 
-  const formatSteps = (steps: string) => {
+  const getStepsArray = (steps: string) => {
     return steps
       .split("\n")
       .map((step) => step.trim())
-      .filter(Boolean)
-      .map((step, index) => `${index + 1}. ${step}`)
-      .join("\n");
+      .filter(Boolean);
   };
 
-  const generateBugReport = () => {
+  const generateBugReport = async () => {
     if (!validateForm()) {
       setError(
         "Please fill in all required fields: Project name, Environment, Summary, Steps, Actual result and Expected result."
@@ -83,34 +83,33 @@ function BugReportPage() {
       return;
     }
 
-    const bugReport = `## Bug Report
-
-**Project:** ${form.projectName}
-
-**Environment:** ${form.environment}
-
-**Summary:** ${form.summary}
-
-**Preconditions:**
-${form.preconditions || "No preconditions"}
-
-**Steps to Reproduce:**
-${formatSteps(form.stepsToReproduce)}
-
-**Actual Result:**
-${form.actualResult}
-
-**Expected Result:**
-${form.expectedResult}
-
-**Severity:** ${form.severity}
-
-**Priority:** ${form.priority}
-
-**Attachment:** ${form.attachmentLink || "No attachment"}`;
-
-    setResult(bugReport);
+    setIsLoading(true);
+    setError("");
     setCopyMessage("");
+
+    try {
+      const response = await generateBugReportApi({
+        project_name: form.projectName,
+        environment: form.environment,
+        summary: form.summary,
+        preconditions: form.preconditions || null,
+        steps_to_reproduce: getStepsArray(form.stepsToReproduce),
+        actual_result: form.actualResult,
+        expected_result: form.expectedResult,
+        severity: form.severity,
+        priority: form.priority,
+        attachment_link: form.attachmentLink || null,
+      });
+
+      setResult(response.formatted_report);
+    } catch {
+      setError(
+        "Could not generate bug report. Please check that backend is running."
+      );
+      setResult("");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const clearForm = () => {
@@ -143,9 +142,8 @@ ${form.expectedResult}
         <h1 className="mb-4 text-4xl font-bold">Bug Report Generator</h1>
 
         <p className="max-w-3xl leading-8 text-slate-300">
-          Fill in the form and generate a structured bug report with summary,
-          environment, steps to reproduce, actual result, expected result,
-          severity and priority.
+          Fill in the form and generate a structured bug report through the
+          FastAPI backend.
         </p>
       </div>
 
@@ -319,9 +317,10 @@ ${form.expectedResult}
           <div className="flex flex-wrap gap-4">
             <button
               type="submit"
-              className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+              disabled={isLoading}
+              className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Generate bug report
+              {isLoading ? "Generating..." : "Generate bug report"}
             </button>
 
             <button
