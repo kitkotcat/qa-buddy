@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# FastAPI / pytest
+.pytest_cache/
+.coverage
+
+# Node / React
+node_modules/
+dist/
+npm-debug.log*
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
