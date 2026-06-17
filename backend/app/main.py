@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.bug_reports import router as bug_reports_router
 from app.api.checklists import router as checklists_router
+from app.api.interview import router as interview_router
 from app.api.test_cases import router as test_cases_router
 
 
@@ -39,3 +40,4 @@ def health_check():
 app.include_router(bug_reports_router)
 app.include_router(test_cases_router)
 app.include_router(checklists_router)
+app.include_router(interview_router)

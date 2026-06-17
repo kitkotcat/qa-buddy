@@ -1,0 +1,100 @@
+[
+  {
+    "id": 1,
+    "category": "Theory QA",
+    "question": "What is software testing?",
+    "short_answer": "Software testing is the process of checking software to find defects and verify that it works according to requirements.",
+    "detailed_answer": "Software testing is a process of evaluating a software product to make sure it meets requirements, works correctly, and does not contain critical defects. Testing helps improve product quality and reduce risks before release."
+  },
+  {
+    "id": 2,
+    "category": "Theory QA",
+    "question": "What is the difference between verification and validation?",
+    "short_answer": "Verification checks whether we build the product correctly. Validation checks whether we build the correct product.",
+    "detailed_answer": "Verification answers the question: Are we building the product according to requirements and specifications? Validation answers the question: Does the product solve the user's real needs? For example, reviewing requirements is verification, while checking the final feature from a user's point of view is validation."
+  },
+  {
+    "id": 3,
+    "category": "Bug reports",
+    "question": "What fields should a good bug report contain?",
+    "short_answer": "A good bug report should contain summary, environment, steps to reproduce, actual result, expected result, severity, priority and attachments.",
+    "detailed_answer": "A good bug report should be clear and reproducible. It usually includes project/module, environment, summary, preconditions, steps to reproduce, actual result, expected result, severity, priority, attachments and additional notes. The main goal is to help the developer reproduce and fix the bug quickly."
+  },
+  {
+    "id": 4,
+    "category": "Bug reports",
+    "question": "What is the difference between severity and priority?",
+    "short_answer": "Severity shows how serious the defect is. Priority shows how urgently it should be fixed.",
+    "detailed_answer": "Severity describes the impact of a defect on the system. For example, a crash or data loss usually has high severity. Priority describes business urgency. A minor visual issue on the main page can have high priority if it affects many users or business reputation."
+  },
+  {
+    "id": 5,
+    "category": "Test cases",
+    "question": "What is a test case?",
+    "short_answer": "A test case is a documented set of steps, conditions and expected results used to verify specific functionality.",
+    "detailed_answer": "A test case describes what should be tested, under what conditions, what steps should be performed, and what result is expected. It helps testers check functionality consistently and makes testing repeatable."
+  },
+  {
+    "id": 6,
+    "category": "Test cases",
+    "question": "What is the difference between a checklist and a test case?",
+    "short_answer": "A checklist is a high-level list of checks. A test case is more detailed and contains steps and expected results.",
+    "detailed_answer": "A checklist usually contains short points to verify, for example: check login with valid data. A test case is more formal and detailed. It contains preconditions, steps, test data, expected result and sometimes priority or test type."
+  },
+  {
+    "id": 7,
+    "category": "HTTP",
+    "question": "What is HTTP?",
+    "short_answer": "HTTP is a protocol used for communication between client and server on the web.",
+    "detailed_answer": "HTTP stands for HyperText Transfer Protocol. It is used when a browser, mobile app or API client sends requests to a server and receives responses. HTTP methods include GET, POST, PUT, PATCH and DELETE."
+  },
+  {
+    "id": 8,
+    "category": "HTTP",
+    "question": "What is the difference between GET and POST?",
+    "short_answer": "GET is used to receive data. POST is used to send or create data.",
+    "detailed_answer": "GET requests are usually used to retrieve information from the server and should not change data. POST requests are used to send data to the server, for example to create a user, submit a form or create an order."
+  },
+  {
+    "id": 9,
+    "category": "API testing",
+    "question": "What do you usually check during API testing?",
+    "short_answer": "I check status code, response body, required fields, data types, validation, error messages and response time.",
+    "detailed_answer": "During API testing, I check that the endpoint returns the correct status code, response body structure, required fields, correct data types, validation for invalid data, error response format, authorization rules and response time. I can use Postman or Swagger for this."
+  },
+  {
+    "id": 10,
+    "category": "SQL basics",
+    "question": "What is SQL used for?",
+    "short_answer": "SQL is used to work with databases: read, create, update and delete data.",
+    "detailed_answer": "SQL stands for Structured Query Language. QA engineers can use SQL to check data in a database, verify that records were created correctly, compare UI data with database data and prepare test data."
+  },
+  {
+    "id": 11,
+    "category": "DevTools",
+    "question": "How can QA use Chrome DevTools?",
+    "short_answer": "QA can use DevTools to inspect elements, check console errors, analyze network requests and test responsive design.",
+    "detailed_answer": "Chrome DevTools helps QA engineers inspect HTML and CSS, check JavaScript console errors, analyze API requests in the Network tab, verify response status codes, check payloads and responses, simulate mobile screen sizes and investigate frontend issues."
+  },
+  {
+    "id": 12,
+    "category": "Postman",
+    "question": "What is Postman?",
+    "short_answer": "Postman is a tool for testing APIs by sending requests and checking responses.",
+    "detailed_answer": "Postman allows testers to send GET, POST, PUT, PATCH and DELETE requests, add headers, body and authorization, check response status codes and body, save collections and create simple API tests."
+  },
+  {
+    "id": 13,
+    "category": "English interview",
+    "question": "Tell me about yourself.",
+    "short_answer": "I am a beginner QA engineer. I study manual testing, API testing and Python automation. I want to gain real experience on a real product.",
+    "detailed_answer": "I am a beginner QA engineer with a technical background. I study manual testing, API testing, DevTools, Postman and Python automation. I have practice with test cases, checklists and bug reports. My main goal now is to gain real experience working on a real product and grow as a QA engineer."
+  },
+  {
+    "id": 14,
+    "category": "English interview",
+    "question": "Why do you want to become a QA engineer?",
+    "short_answer": "I like checking details, finding problems and improving product quality.",
+    "detailed_answer": "I want to become a QA engineer because I like analyzing products, checking details, finding defects and helping the team improve quality. I also like that QA combines technical skills, communication and product thinking."
+  }
+]
