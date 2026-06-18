@@ -1,101 +1,107 @@
 import { useState } from "react";
 import { generateTestCaseApi } from "../api/testCases";
+import { useLanguage } from "../i18n/LanguageContext";
 
-type TestCaseForm = {
-  featureName: string;
-  requirement: string;
-  preconditions: string;
-  steps: string;
-  expectedResult: string;
-  testType: string;
-  priority: string;
-};
-
-const initialForm: TestCaseForm = {
-  featureName: "",
+const initialForm = {
+  feature_name: "",
   requirement: "",
   preconditions: "",
   steps: "",
-  expectedResult: "",
-  testType: "Functional",
-  priority: "Medium",
+  expected_result: "",
+  test_type: "Functional",
+  priority: "High",
 };
 
-const testTypeOptions = ["Smoke", "Functional", "Regression", "Negative", "UI", "API"];
-const priorityOptions = ["High", "Medium", "Low"];
-
 function TestCasePage() {
-  const [form, setForm] = useState<TestCaseForm>(initialForm);
-  const [result, setResult] = useState("");
-  const [error, setError] = useState("");
-  const [copyMessage, setCopyMessage] = useState("");
+  const { language, t } = useLanguage();
+  const [form, setForm] = useState(initialForm);
+  const [generatedTestCase, setGeneratedTestCase] = useState("");
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
+  const testTypeOptions = ["Functional", "Smoke", "Regression", "Negative", "UI"];
+  const priorityOptions = ["High", "Medium", "Low"];
 
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
+  const updateField = (field: keyof typeof initialForm, value: string) => {
+    setForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
     }));
-
-    setError("");
-    setCopyMessage("");
+    setMessage("");
   };
 
-  const validateForm = () => {
-    const requiredFields = [
-      form.featureName,
-      form.requirement,
-      form.steps,
-      form.expectedResult,
-    ];
-
-    return requiredFields.every((field) => field.trim().length > 0);
-  };
-
-  const getStepsArray = (steps: string) => {
-    return steps
+  const buildLocalizedTestCase = () => {
+    const steps = form.steps
       .split("\n")
-      .map((step) => step.trim())
-      .filter(Boolean);
+      .filter((step) => step.trim())
+      .map((step, index) => `${index + 1}. ${step.trim()}`)
+      .join("\n");
+
+    if (language === "ru") {
+      return `ТЕСТ-КЕЙС
+
+Feature: ${form.feature_name}
+Requirement:
+${form.requirement}
+
+Предусловия:
+${form.preconditions || "Не указаны"}
+
+Шаги:
+${steps}
+
+Ожидаемый результат:
+${form.expected_result}
+
+Test Type: ${form.test_type}
+Priority: ${form.priority}`;
+    }
+
+    return `TEST CASE
+
+Feature: ${form.feature_name}
+Requirement:
+${form.requirement}
+
+Preconditions:
+${form.preconditions || "Not specified"}
+
+Steps:
+${steps}
+
+Expected Result:
+${form.expected_result}
+
+Test Type: ${form.test_type}
+Priority: ${form.priority}`;
   };
 
-  const generateTestCase = async () => {
-    if (!validateForm()) {
-      setError(
-        "Please fill in all required fields: Feature name, Requirement, Steps and Expected result."
-      );
-      setResult("");
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (
+      !form.feature_name ||
+      !form.requirement ||
+      !form.steps ||
+      !form.expected_result
+    ) {
+      setMessage(t("common.requiredError"));
       return;
     }
 
     setIsLoading(true);
-    setError("");
-    setCopyMessage("");
+    setMessage("");
 
     try {
-      const response = await generateTestCaseApi({
-        feature_name: form.featureName,
-        requirement: form.requirement,
-        preconditions: form.preconditions || null,
-        steps: getStepsArray(form.steps),
-        expected_result: form.expectedResult,
-        test_type: form.testType,
-        priority: form.priority,
+      await generateTestCaseApi({
+        ...form,
+        steps: form.steps.split("\n").filter((step) => step.trim()),
       });
 
-      setResult(response.formatted_test_case);
+      setGeneratedTestCase(buildLocalizedTestCase());
+      setMessage(t("testCases.success"));
     } catch {
-      setError(
-        "Could not generate test case. Please check that backend is running."
-      );
-      setResult("");
+      setMessage(`${t("common.error")} ${t("common.backendError")}`);
     } finally {
       setIsLoading(false);
     }
@@ -103,219 +109,176 @@ function TestCasePage() {
 
   const clearForm = () => {
     setForm(initialForm);
-    setResult("");
-    setError("");
-    setCopyMessage("");
+    setGeneratedTestCase("");
+    setMessage("");
   };
 
-  const copyResult = async () => {
-    if (!result) {
+  const copyTestCase = async () => {
+    if (!generatedTestCase) {
       return;
     }
 
-    try {
-      await navigator.clipboard.writeText(result);
-      setCopyMessage("Test case copied to clipboard.");
-    } catch {
-      setCopyMessage("Could not copy test case. Please copy it manually.");
-    }
+    await navigator.clipboard.writeText(generatedTestCase);
+    setMessage(t("common.copied"));
   };
 
   return (
     <section>
       <div className="mb-10">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
-          QA Buddy Tool
+          {t("testCases.badge")}
         </p>
 
-        <h1 className="mb-4 text-4xl font-bold">Test Case Generator</h1>
+        <h1 className="mb-4 text-4xl font-bold">{t("testCases.title")}</h1>
 
         <p className="max-w-3xl leading-8 text-slate-300">
-          Fill in the form and generate a structured test case through the
-          FastAPI backend.
+          {t("testCases.description")}
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      {message && (
+        <div className="mb-6 rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-4 py-3 text-cyan-200">
+          {message}
+        </div>
+      )}
+
+      <div className="grid gap-8 lg:grid-cols-2">
         <form
+          onSubmit={handleSubmit}
           className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6"
-          onSubmit={(event) => {
-            event.preventDefault();
-            generateTestCase();
-          }}
         >
-          <div className="mb-6 grid gap-5 md:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block font-semibold text-slate-200">
-                Feature name *
-              </span>
+          <div className="grid gap-5">
+            <label className="grid gap-2">
+              <span className="font-semibold">{t("testCases.featureName")}</span>
               <input
-                name="featureName"
-                value={form.featureName}
-                onChange={handleChange}
-                placeholder="Login"
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400"
+                value={form.feature_name}
+                onChange={(event) =>
+                  updateField("feature_name", event.target.value)
+                }
+                placeholder={t("testCases.featureNamePlaceholder")}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
               />
             </label>
 
-            <label className="block">
-              <span className="mb-2 block font-semibold text-slate-200">
-                Test type
-              </span>
-              <select
-                name="testType"
-                value={form.testType}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
-              >
-                {testTypeOptions.map((testType) => (
-                  <option key={testType} value={testType}>
-                    {testType}
-                  </option>
-                ))}
-              </select>
+            <label className="grid gap-2">
+              <span className="font-semibold">{t("testCases.requirement")}</span>
+              <textarea
+                value={form.requirement}
+                onChange={(event) =>
+                  updateField("requirement", event.target.value)
+                }
+                placeholder={t("testCases.requirementPlaceholder")}
+                rows={3}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
             </label>
-          </div>
 
-          <label className="mb-5 block">
-            <span className="mb-2 block font-semibold text-slate-200">
-              Requirement *
-            </span>
-            <textarea
-              name="requirement"
-              value={form.requirement}
-              onChange={handleChange}
-              placeholder="User should be able to log in with valid email and password."
-              rows={4}
-              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400"
-            />
-          </label>
-
-          <label className="mb-5 block">
-            <span className="mb-2 block font-semibold text-slate-200">
-              Preconditions
-            </span>
-            <textarea
-              name="preconditions"
-              value={form.preconditions}
-              onChange={handleChange}
-              placeholder="User is registered and located on the login page."
-              rows={3}
-              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400"
-            />
-          </label>
-
-          <label className="mb-5 block">
-            <span className="mb-2 block font-semibold text-slate-200">
-              Steps *
-            </span>
-            <textarea
-              name="steps"
-              value={form.steps}
-              onChange={handleChange}
-              placeholder={`Open login page\nEnter valid email\nEnter valid password\nClick Login button`}
-              rows={5}
-              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400"
-            />
-            <span className="mt-2 block text-sm text-slate-500">
-              Write each step from a new line.
-            </span>
-          </label>
-
-          <label className="mb-5 block">
-            <span className="mb-2 block font-semibold text-slate-200">
-              Expected result *
-            </span>
-            <textarea
-              name="expectedResult"
-              value={form.expectedResult}
-              onChange={handleChange}
-              placeholder="User is redirected to the account page."
-              rows={4}
-              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400"
-            />
-          </label>
-
-          <div className="mb-6 grid gap-5 md:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block font-semibold text-slate-200">
-                Priority
-              </span>
-              <select
-                name="priority"
-                value={form.priority}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
-              >
-                {priorityOptions.map((priority) => (
-                  <option key={priority} value={priority}>
-                    {priority}
-                  </option>
-                ))}
-              </select>
+            <label className="grid gap-2">
+              <span className="font-semibold">{t("common.preconditions")}</span>
+              <textarea
+                value={form.preconditions}
+                onChange={(event) =>
+                  updateField("preconditions", event.target.value)
+                }
+                placeholder={t("testCases.preconditionsPlaceholder")}
+                rows={3}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
             </label>
-          </div>
 
-          {error && (
-            <div className="mb-5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-200">
-              {error}
+            <label className="grid gap-2">
+              <span className="font-semibold">{t("common.steps")}</span>
+              <textarea
+                value={form.steps}
+                onChange={(event) => updateField("steps", event.target.value)}
+                placeholder={t("testCases.stepsPlaceholder")}
+                rows={5}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
+            </label>
+
+            <label className="grid gap-2">
+              <span className="font-semibold">{t("common.expectedResult")}</span>
+              <textarea
+                value={form.expected_result}
+                onChange={(event) =>
+                  updateField("expected_result", event.target.value)
+                }
+                placeholder={t("testCases.expectedResultPlaceholder")}
+                rows={3}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
+            </label>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="grid gap-2">
+                <span className="font-semibold">{t("testCases.testType")}</span>
+                <select
+                  value={form.test_type}
+                  onChange={(event) =>
+                    updateField("test_type", event.target.value)
+                  }
+                  className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+                >
+                  {testTypeOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2">
+                <span className="font-semibold">{t("common.priority")}</span>
+                <select
+                  value={form.priority}
+                  onChange={(event) =>
+                    updateField("priority", event.target.value)
+                  }
+                  className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+                >
+                  {priorityOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
             </div>
-          )}
 
-          <div className="flex flex-wrap gap-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isLoading ? "Generating..." : "Generate test case"}
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:opacity-60"
+              >
+                {isLoading ? t("common.loading") : t("testCases.generateButton")}
+              </button>
 
-            <button
-              type="button"
-              onClick={clearForm}
-              className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-slate-200 transition hover:border-cyan-400"
-            >
-              Clear form
-            </button>
+              <button
+                type="button"
+                onClick={clearForm}
+                className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-slate-300 transition hover:border-cyan-400"
+              >
+                {t("testCases.clearButton")}
+              </button>
+            </div>
           </div>
         </form>
 
-        <aside className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
+        <article className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
           <div className="mb-5 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                Result
-              </p>
-              <h2 className="mt-2 text-2xl font-bold">Generated test case</h2>
-            </div>
+            <h2 className="text-2xl font-bold">{t("testCases.resultTitle")}</h2>
 
             <button
               type="button"
-              onClick={copyResult}
-              disabled={!result}
-              className="rounded-xl border border-slate-700 px-4 py-2 font-semibold text-slate-200 transition hover:border-cyan-400 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={copyTestCase}
+              className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-cyan-300"
             >
-              Copy
+              {t("testCases.copyButton")}
             </button>
           </div>
 
-          {copyMessage && (
-            <div className="mb-4 rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-4 py-3 text-cyan-200">
-              {copyMessage}
-            </div>
-          )}
-
-          {result ? (
-            <pre className="min-h-[480px] overflow-auto whitespace-pre-wrap rounded-2xl border border-slate-800 bg-slate-950 p-5 text-sm leading-7 text-slate-200">
-              {result}
-            </pre>
-          ) : (
-            <div className="flex min-h-[480px] items-center justify-center rounded-2xl border border-dashed border-slate-700 p-6 text-center text-slate-500">
-              Generated test case will appear here.
-            </div>
-          )}
-        </aside>
+          <pre className="min-h-[500px] whitespace-pre-wrap rounded-2xl border border-slate-800 bg-slate-950 p-5 leading-8 text-slate-200">
+            {generatedTestCase || t("common.result")}
+          </pre>
+        </article>
       </div>
     </section>
   );

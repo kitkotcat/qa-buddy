@@ -2,13 +2,13 @@ export type BugReportRequest = {
   project_name: string;
   environment: string;
   summary: string;
-  preconditions: string | null;
+  preconditions: string;
   steps_to_reproduce: string[];
   actual_result: string;
   expected_result: string;
   severity: string;
   priority: string;
-  attachment_link: string | null;
+  attachment_link: string;
 };
 
 export type BugReportResponse = {

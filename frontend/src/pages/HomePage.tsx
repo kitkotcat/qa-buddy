@@ -1,55 +1,70 @@
-import ToolCard from "../components/ToolCard";
-import { tools } from "../data/tools";
+import { Link } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 function HomePage() {
+  const { t } = useLanguage();
+
+  const tools = [
+    {
+      title: t("home.bugReportsTitle"),
+      description: t("home.bugReportsDescription"),
+      path: "/bug-reports",
+    },
+    {
+      title: t("home.testCasesTitle"),
+      description: t("home.testCasesDescription"),
+      path: "/test-cases",
+    },
+    {
+      title: t("home.checklistsTitle"),
+      description: t("home.checklistsDescription"),
+      path: "/checklists",
+    },
+    {
+      title: t("home.interviewTitle"),
+      description: t("home.interviewDescription"),
+      path: "/interview",
+    },
+  ];
+
   return (
-    <div>
-      <section className="mb-12 py-10">
+    <section>
+      <div className="mb-12 rounded-3xl border border-slate-800 bg-slate-900/70 p-8">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
-          QA Buddy
+          {t("home.badge")}
         </p>
 
-        <h1 className="mb-6 max-w-4xl text-5xl font-bold tracking-tight md:text-7xl">
-          Smart assistant for beginner QA engineers
+        <h1 className="mb-5 max-w-4xl text-5xl font-black leading-tight">
+          {t("home.title")}
         </h1>
 
-        <p className="max-w-3xl text-lg leading-8 text-slate-300">
-          QA Buddy helps junior QA engineers create bug reports, test cases,
-          checklists and prepare for interviews. This pet-project is built with
-          React, TypeScript, Tailwind CSS and FastAPI.
+        <p className="max-w-3xl text-xl leading-9 text-slate-300">
+          {t("home.description")}
         </p>
+      </div>
 
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a
-            href="http://127.0.0.1:8000/docs"
-            target="_blank"
-            className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
-          >
-            Open API Docs
-          </a>
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold">{t("home.featuresTitle")}</h2>
+      </div>
 
-          <a
-            href="http://127.0.0.1:8000/api/health"
-            target="_blank"
-            className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-slate-200 transition hover:border-cyan-400"
-          >
-            Check Backend Health
-          </a>
-        </div>
-      </section>
-
-      <section className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {tools.map((tool) => (
-          <ToolCard
-            key={tool.title}
-            title={tool.title}
-            description={tool.description}
-            path={tool.path}
-            status={tool.status}
-          />
+          <Link
+            key={tool.path}
+            to={tool.path}
+            className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 transition hover:border-cyan-400 hover:bg-slate-900"
+          >
+            <h3 className="mb-3 text-2xl font-bold">{tool.title}</h3>
+
+            <p className="mb-6 leading-8 text-slate-400">{tool.description}</p>
+
+            <span className="font-semibold text-cyan-400">
+              {t("home.openTool")} →
+            </span>
+          </Link>
         ))}
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 

@@ -1,7 +1,7 @@
 export type TestCaseRequest = {
   feature_name: string;
   requirement: string;
-  preconditions: string | null;
+  preconditions: string;
   steps: string[];
   expected_result: string;
   test_type: string;

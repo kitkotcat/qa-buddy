@@ -5,8 +5,11 @@ import {
   getRandomInterviewQuestionApi,
 } from "../api/interview";
 import type { InterviewQuestion } from "../api/interview";
+import { useLanguage } from "../i18n/LanguageContext";
 
 function InterviewPage() {
+  const { t } = useLanguage();
+
   const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
   const [selectedQuestion, setSelectedQuestion] =
     useState<InterviewQuestion | null>(null);
@@ -33,9 +36,7 @@ function InterviewPage() {
         setSelectedQuestion(data[0]);
       }
     } catch {
-      setError(
-        "Could not load interview questions. Please check that backend is running."
-      );
+      setError(t("interview.loadError"));
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +70,7 @@ function InterviewPage() {
       const data = await getInterviewQuestionByIdApi(id);
       setSelectedQuestion(data);
     } catch {
-      setError("Could not load selected interview question.");
+      setError(t("interview.loadSelectedError"));
     } finally {
       setIsQuestionLoading(false);
     }
@@ -101,7 +102,7 @@ function InterviewPage() {
       setSelectedQuestion(data);
       setSelectedCategory("All");
     } catch {
-      setError("Could not load random interview question.");
+      setError(t("interview.loadRandomError"));
     } finally {
       setIsQuestionLoading(false);
     }
@@ -117,18 +118,20 @@ function InterviewPage() {
         ? selectedQuestion.short_answer
         : selectedQuestion.detailed_answer;
 
-    const formattedAnswer = `Question: ${selectedQuestion.question}
+    const formattedAnswer = `${t("interview.selectedQuestion")}: ${
+      selectedQuestion.question
+    }
 
-Category: ${selectedQuestion.category}
+${t("common.category")}: ${selectedQuestion.category}
 
-Answer:
+${answerMode === "short" ? t("interview.shortAnswer") : t("interview.detailedAnswer")}:
 ${answer}`;
 
     try {
       await navigator.clipboard.writeText(formattedAnswer);
-      setCopyMessage("Answer copied to clipboard.");
+      setCopyMessage(t("common.copied"));
     } catch {
-      setCopyMessage("Could not copy answer. Please copy it manually.");
+      setCopyMessage(t("common.error"));
     }
   };
 
@@ -141,14 +144,13 @@ ${answer}`;
     <section>
       <div className="mb-10">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
-          QA Buddy Tool
+          {t("interview.badge")}
         </p>
 
-        <h1 className="mb-4 text-4xl font-bold">Interview Trainer</h1>
+        <h1 className="mb-4 text-4xl font-bold">{t("interview.title")}</h1>
 
         <p className="max-w-3xl leading-8 text-slate-300">
-          Practice QA interview questions by category. Learn short answers for
-          quick interviews and detailed answers for deeper preparation.
+          {t("interview.description")}
         </p>
       </div>
 
@@ -160,16 +162,19 @@ ${answer}`;
 
       {isLoading ? (
         <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-8 text-slate-300">
-          Loading interview questions...
+          {t("interview.loadingQuestions")}
         </div>
       ) : (
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <aside className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
             <div className="mb-6">
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                Training library
+                {t("interview.libraryTitle")}
               </p>
-              <h2 className="mt-2 text-2xl font-bold">Questions</h2>
+
+              <h2 className="mt-2 text-2xl font-bold">
+                {t("interview.questions")}
+              </h2>
             </div>
 
             <div className="mb-6 flex flex-wrap gap-3">
@@ -184,7 +189,7 @@ ${answer}`;
                       : "border border-slate-700 text-slate-300 hover:border-cyan-400"
                   }`}
                 >
-                  {category}
+                  {category === "All" ? "All" : category}
                 </button>
               ))}
             </div>
@@ -194,7 +199,7 @@ ${answer}`;
               onClick={loadRandomQuestion}
               className="mb-6 w-full rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
             >
-              Random question
+              {t("interview.randomQuestion")}
             </button>
 
             <div className="grid max-h-[620px] gap-4 overflow-auto pr-1">
@@ -234,14 +239,14 @@ ${answer}`;
           <main className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
             {isQuestionLoading || !selectedQuestion ? (
               <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-dashed border-slate-700 p-6 text-slate-500">
-                Loading selected question...
+                {t("interview.loadingSelected")}
               </div>
             ) : (
               <>
                 <div className="mb-6 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                      Selected question
+                      {t("interview.selectedQuestion")}
                     </p>
 
                     <h2 className="mb-4 text-3xl font-bold leading-tight">
@@ -249,7 +254,7 @@ ${answer}`;
                     </h2>
 
                     <p className="text-slate-400">
-                      Category: {selectedQuestion.category}
+                      {t("common.category")}: {selectedQuestion.category}
                     </p>
                   </div>
 
@@ -258,7 +263,7 @@ ${answer}`;
                     onClick={copyAnswer}
                     className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-cyan-300"
                   >
-                    Copy answer
+                    {t("interview.copyAnswer")}
                   </button>
                 </div>
 
@@ -275,7 +280,7 @@ ${answer}`;
                         : "border border-slate-700 text-slate-300 hover:border-cyan-400"
                     }`}
                   >
-                    Short answer
+                    {t("interview.shortAnswer")}
                   </button>
 
                   <button
@@ -290,7 +295,7 @@ ${answer}`;
                         : "border border-slate-700 text-slate-300 hover:border-cyan-400"
                     }`}
                   >
-                    Detailed answer
+                    {t("interview.detailedAnswer")}
                   </button>
                 </div>
 
@@ -302,7 +307,9 @@ ${answer}`;
 
                 <article className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
                   <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                    {answerMode === "short" ? "Short answer" : "Detailed answer"}
+                    {answerMode === "short"
+                      ? t("interview.shortAnswer")
+                      : t("interview.detailedAnswer")}
                   </p>
 
                   <p className="whitespace-pre-wrap text-lg leading-9 text-slate-200">
@@ -311,12 +318,12 @@ ${answer}`;
                 </article>
 
                 <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                  <h3 className="mb-3 text-lg font-semibold">Practice tip</h3>
+                  <h3 className="mb-3 text-lg font-semibold">
+                    {t("interview.practiceTipTitle")}
+                  </h3>
 
                   <p className="leading-8 text-slate-400">
-                    First, try to answer the question yourself. Then open the
-                    short answer. Use the detailed answer only after your first
-                    attempt.
+                    {t("interview.practiceTipText")}
                   </p>
                 </div>
               </>
