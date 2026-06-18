@@ -219,6 +219,38 @@ Current backend tests cover:
     ├── README.md
     └── .gitignore
 
+
+## Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home-page.png)
+
+### Bug Report Generator
+
+![Bug Report Generator](screenshots/bug-report-generator.png)
+
+### Test Case Generator
+
+![Test Case Generator](screenshots/test-case-generator.png)
+
+### Checklist Library
+
+![Checklist Library](screenshots/checklist-library.png)
+
+### Interview Trainer
+
+![Interview Trainer](screenshots/interview-trainer.png)
+
+### Swagger API Documentation
+
+![Swagger API Documentation](screenshots/swagger-api.png)
+
+### Pytest Result
+
+![Pytest Result](screenshots/pytest-result.png)
+
+
 ## Documentation
 
 Project documentation is located in the docs folder:
