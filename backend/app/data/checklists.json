@@ -200,5 +200,38 @@
         "Проверить успешную отправку формы."
       ]
     }
+  },
+  {
+    "id": 7,
+    "category": {
+      "en": "Mobile",
+      "ru": "Мобильное приложение"
+    },
+    "title": {
+      "en": "Mobile App Checklist",
+      "ru": "Чек-лист мобильного приложения"
+    },
+    "items": {
+      "en": [
+        "Verify first app launch.",
+        "Verify app launch after closing.",
+        "Verify app behavior after minimizing.",
+        "Verify app behavior after returning from background.",
+        "Verify screen rotation if supported.",
+        "Verify offline behavior.",
+        "Verify error messages.",
+        "Verify UI on different screen sizes."
+      ],
+      "ru": [
+        "Проверить первый запуск приложения.",
+        "Проверить запуск приложения после закрытия.",
+        "Проверить поведение приложения после сворачивания.",
+        "Проверить поведение приложения после возврата из фона.",
+        "Проверить поворот экрана, если он поддерживается.",
+        "Проверить поведение без интернета.",
+        "Проверить сообщения об ошибках.",
+        "Проверить UI на разных размерах экрана."
+      ]
+    }
   }
 ]

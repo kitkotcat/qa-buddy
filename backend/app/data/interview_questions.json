@@ -226,5 +226,43 @@
       "en": "I chose QA because it combines analytical thinking, attention to detail and communication. I enjoy checking how products work, finding bugs and helping the team deliver better quality.",
       "ru": "Я выбрала QA, потому что эта профессия объединяет аналитическое мышление, внимание к деталям и коммуникацию. Мне нравится проверять, как работает продукт, находить баги и помогать команде делать продукт качественнее."
     }
+  },
+  {
+    "id": 13,
+    "category": {
+      "en": "Test cases",
+      "ru": "Тест-кейсы"
+    },
+    "question": {
+      "en": "What is the difference between a test case and a checklist?",
+      "ru": "В чём разница между тест-кейсом и чек-листом?"
+    },
+    "short_answer": {
+      "en": "A test case is more detailed and contains steps and expected result. A checklist is a shorter list of checks.",
+      "ru": "Тест-кейс более подробный и содержит шаги и ожидаемый результат. Чек-лист — это более короткий список проверок."
+    },
+    "detailed_answer": {
+      "en": "A test case is used when we need a structured scenario with preconditions, exact steps and expected result. A checklist is useful for quick smoke, regression or exploratory testing when we need to remember important areas to check.",
+      "ru": "Тест-кейс используется, когда нужен структурированный сценарий с предусловиями, точными шагами и ожидаемым результатом. Чек-лист удобен для smoke, regression или exploratory testing, когда важно не забыть основные области проверки."
+    }
+  },
+  {
+    "id": 14,
+    "category": {
+      "en": "API testing",
+      "ru": "API-тестирование"
+    },
+    "question": {
+      "en": "What is the difference between GET and POST?",
+      "ru": "В чём разница между GET и POST?"
+    },
+    "short_answer": {
+      "en": "GET is used to request data. POST is used to create or send data to the server.",
+      "ru": "GET используется для получения данных. POST используется для создания или отправки данных на сервер."
+    },
+    "detailed_answer": {
+      "en": "GET requests usually do not have a request body and should not change server data. POST requests usually send data in the body and can create new resources or trigger actions on the server.",
+      "ru": "GET-запросы обычно не имеют тела запроса и не должны изменять данные на сервере. POST-запросы обычно отправляют данные в body и могут создавать новые ресурсы или запускать действия на сервере."
+    }
   }
 ]
