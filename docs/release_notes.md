@@ -1,63 +1,143 @@
 # QA Buddy — Release Notes
 
-## Version 0.1.0 — MVP Development
+## Version 0.1.0 — QA Buddy MVP
 
-### Added
+### Release Summary
 
-- Initial monorepo structure
-- React + TypeScript + Tailwind frontend
+QA Buddy v0.1.0 is the first stable MVP release of the project.
+
+QA Buddy is a fullstack portfolio project for beginner QA engineers.  
+The application helps users create bug reports, generate test cases, use QA checklists and prepare for QA interviews.
+
+---
+
+## Implemented Features
+
+### Frontend
+
+- React + TypeScript + Tailwind CSS frontend
+- Vite development environment
+- React Router navigation
+- Responsive dark UI
+- Language switcher EN/RU
+- Local language persistence with localStorage
+
+### Backend
+
 - FastAPI backend
+- Pydantic schemas
+- Modular API structure
+- JSON-based temporary data storage
 - Swagger API documentation
-- Bug Report Generator frontend
-- Bug Report Generator API
-- Test Case Generator frontend
-- Test Case Generator API
-- Checklist Library frontend
-- Checklist Library API
-- Interview Trainer frontend
-- Interview Trainer API
-- Pytest backend tests
-- Project documentation
 
-### Implemented API Endpoints
+### QA Tools
+
+- Bug Report Generator
+- Test Case Generator
+- Checklist Library
+- Interview Trainer
+
+### Bilingual Support
+
+- English / Russian UI
+- English / Russian checklist data
+- English / Russian interview questions
+- English / Russian interview answers
+- Language parameter support in backend API
+
+### Testing
+
+- Pytest backend tests
+- FastAPI TestClient tests
+- API tests for main endpoints
+- Tests for bilingual backend data
+- Validation and not found checks
+
+### Documentation
+
+- README.md
+- Requirements v1
+- Test Plan
+- API Testing notes
+- Test Cases
+- Bug Reports
+- Release Notes
+- Project screenshots
+
+---
+
+## Implemented API Endpoints
+
+### Health
 
 - GET /api/health
+
+### Bug Reports
+
 - POST /api/bug-reports/generate
+
+### Test Cases
+
 - POST /api/test-cases/generate
+
+### Checklists
+
 - GET /api/checklists
 - GET /api/checklists/{checklist_id}
+
+Supports language query parameter:
+
+- ?lang=en
+- ?lang=ru
+
+### Interview
+
 - GET /api/interview/questions
 - GET /api/interview/questions/{question_id}
 - GET /api/interview/random
 
-### Testing
+Supports language query parameter:
 
-Backend tests include:
+- ?lang=en
+- ?lang=ru
 
-- health endpoint tests
-- bug report generator tests
-- test case generator tests
-- checklist tests
-- interview trainer tests
+---
 
-Current test status:
+## Test Status
 
-    12 passed
+Backend tests are implemented for:
 
-### Known Limitations
+- health endpoint
+- bug report generation
+- test case generation
+- checklist endpoints
+- interview endpoints
+- bilingual data
+- validation errors
+- 404 errors
 
-- data is stored in JSON files
-- no authentication
-- no database
-- no PDF export
-- no deployed version yet
-- no persistent checklist progress
+---
 
-### Next Planned Improvements
+## Known Limitations
 
-- add screenshots to README
-- add localStorage for checklist progress
-- add search for checklists and interview questions
-- add more interview questions
-- add SQLite database
-- add deployment
+- No database yet
+- No authentication
+- No PDF / Markdown export yet
+- No deployed production version yet
+- Checklist progress is not persisted yet
+- Generated bug reports and test cases are not stored yet
+
+---
+
+## Next Planned Improvements
+
+- Add localStorage for checklist progress
+- Add search and filters
+- Add more checklist categories
+- Add more interview questions
+- Add SQLite or PostgreSQL
+- Add export to Markdown / PDF
+- Add deployment
+- Add Portfolio Builder module
+- Add API Sandbox module
+- Add Fake Shop for QA practice

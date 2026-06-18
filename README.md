@@ -7,6 +7,7 @@
   <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img alt="Pytest" src="https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" />
+  <img alt="Version" src="https://img.shields.io/badge/Version-v0.1.0-orange?style=for-the-badge" />
   <img alt="Status" src="https://img.shields.io/badge/Status-MVP-blueviolet?style=for-the-badge" />
   <img alt="Portfolio" src="https://img.shields.io/badge/Portfolio_Project-Junior_QA-success?style=for-the-badge" />
 </p>
@@ -273,6 +274,24 @@ Project documentation is located in the docs folder:
 - test_cases.md
 - bug_reports.md
 - release_notes.md
+
+## Current Release
+
+**v0.1.0 — QA Buddy MVP**
+
+This release includes the first stable MVP version of QA Buddy:
+
+- React + TypeScript + Tailwind frontend
+- FastAPI backend
+- Bug Report Generator
+- Test Case Generator
+- Checklist Library
+- Interview Trainer
+- Bilingual UI: English / Russian
+- Bilingual backend data for checklists and interview questions
+- Swagger API documentation
+- Pytest backend tests
+- GitHub documentation and screenshots
 
 ## Roadmap
 
