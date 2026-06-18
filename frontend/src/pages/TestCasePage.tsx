@@ -5,6 +5,7 @@ import {
   getStorageItem,
   setStorageItem,
 } from "../storage/localStorageService";
+import { exportMarkdownDocument } from "../utils/markdownExport";
 
 const SAVED_TEST_CASES_KEY = "qa-buddy-saved-test-cases";
 
@@ -53,6 +54,8 @@ function TestCasePage() {
           copySaved: "Скопировать",
           deleteSaved: "Удалить",
           createdAt: "Создано",
+          exportCurrent: "Экспорт .md",
+          exportSaved: "Экспорт .md",
         }
       : {
           save: "Save test case",
@@ -62,6 +65,8 @@ function TestCasePage() {
           copySaved: "Copy",
           deleteSaved: "Delete",
           createdAt: "Created",
+          exportCurrent: "Export .md",
+          exportSaved: "Export .md",
         };
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
@@ -356,6 +361,21 @@ Priority: ${form.priority}`;
               >
                 {labels.save}
               </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  exportMarkdownDocument(
+                    form.feature_name || "Test case",
+                    generatedTestCase,
+                    "test-case"
+                  )
+                }
+                disabled={!generatedTestCase}
+                className="rounded-xl border border-slate-700 px-4 py-2 font-semibold text-slate-300 transition hover:border-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {labels.exportCurrent}
+              </button>
             </div>
           </div>
 
@@ -392,6 +412,20 @@ Priority: ${form.priority}`;
                       className="rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
                     >
                       {labels.copySaved}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        exportMarkdownDocument(
+                          testCase.title,
+                          testCase.content,
+                          "test-case"
+                        )
+                      }
+                      className="rounded-xl border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-400"
+                    >
+                      {labels.exportSaved}
                     </button>
 
                     <button

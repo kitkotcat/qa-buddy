@@ -5,6 +5,7 @@ import {
   getStorageItem,
   setStorageItem,
 } from "../storage/localStorageService";
+import { exportMarkdownDocument } from "../utils/markdownExport";
 
 const SAVED_BUG_REPORTS_KEY = "qa-buddy-saved-bug-reports";
 
@@ -56,6 +57,8 @@ function BugReportPage() {
           copySaved: "Скопировать",
           deleteSaved: "Удалить",
           createdAt: "Создано",
+          exportCurrent: "Экспорт .md",
+          exportSaved: "Экспорт .md",
         }
       : {
           save: "Save report",
@@ -65,6 +68,8 @@ function BugReportPage() {
           copySaved: "Copy",
           deleteSaved: "Delete",
           createdAt: "Created",
+          exportCurrent: "Export .md",
+          exportSaved: "Export .md",
         };
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
@@ -417,6 +422,21 @@ ${form.attachment_link || "Not specified"}`;
               >
                 {labels.save}
               </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  exportMarkdownDocument(
+                    form.summary || form.project_name || "Bug report",
+                    generatedReport,
+                    "bug-report"
+                  )
+                }
+                disabled={!generatedReport}
+                className="rounded-xl border border-slate-700 px-4 py-2 font-semibold text-slate-300 transition hover:border-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {labels.exportCurrent}
+              </button>
             </div>
           </div>
 
@@ -453,6 +473,20 @@ ${form.attachment_link || "Not specified"}`;
                       className="rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
                     >
                       {labels.copySaved}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        exportMarkdownDocument(
+                          report.title,
+                          report.content,
+                          "bug-report"
+                        )
+                      }
+                      className="rounded-xl border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-400"
+                    >
+                      {labels.exportSaved}
                     </button>
 
                     <button
