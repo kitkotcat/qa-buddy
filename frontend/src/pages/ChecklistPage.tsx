@@ -2,14 +2,25 @@ import { useEffect, useMemo, useState } from "react";
 import { getChecklistsApi } from "../api/checklists";
 import type { Checklist } from "../api/checklists";
 import { useLanguage } from "../i18n/LanguageContext";
+import {
+  getStorageItem,
+  removeStorageItem,
+  setStorageItem,
+} from "../storage/localStorageService";
+
+function getChecklistProgressKey(checklistId: number) {
+  return `qa-buddy-checklist-progress-${checklistId}`;
+}
 
 function ChecklistPage() {
   const { language, t } = useLanguage();
+
   const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [selectedChecklist, setSelectedChecklist] = useState<Checklist | null>(
     null
   );
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -26,8 +37,15 @@ function ChecklistPage() {
       setChecklists(data);
 
       if (data.length > 0) {
-        setSelectedChecklist(data[0]);
-        setCheckedItems([]);
+        const firstChecklist = data[0];
+        setSelectedChecklist(firstChecklist);
+
+        const savedProgress = getStorageItem<number[]>(
+          getChecklistProgressKey(firstChecklist.id),
+          []
+        );
+
+        setCheckedItems(savedProgress);
       }
     } catch {
       setMessage(t("checklists.loadError"));
@@ -35,6 +53,26 @@ function ChecklistPage() {
       setIsLoading(false);
     }
   };
+
+  const filteredChecklists = useMemo(() => {
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
+    if (!normalizedSearchQuery) {
+      return checklists;
+    }
+
+    return checklists.filter((checklist) => {
+      const searchableText = [
+        checklist.title,
+        checklist.category,
+        ...checklist.items,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(normalizedSearchQuery);
+    });
+  }, [checklists, searchQuery]);
 
   const progress = useMemo(() => {
     if (!selectedChecklist || selectedChecklist.items.length === 0) {
@@ -46,20 +84,39 @@ function ChecklistPage() {
 
   const selectChecklist = (checklist: Checklist) => {
     setSelectedChecklist(checklist);
-    setCheckedItems([]);
+
+    const savedProgress = getStorageItem<number[]>(
+      getChecklistProgressKey(checklist.id),
+      []
+    );
+
+    setCheckedItems(savedProgress);
     setMessage("");
   };
 
   const toggleItem = (index: number) => {
-    setCheckedItems((currentItems) =>
-      currentItems.includes(index)
-        ? currentItems.filter((item) => item !== index)
-        : [...currentItems, index]
+    if (!selectedChecklist) {
+      return;
+    }
+
+    const nextCheckedItems = checkedItems.includes(index)
+      ? checkedItems.filter((item) => item !== index)
+      : [...checkedItems, index];
+
+    setCheckedItems(nextCheckedItems);
+    setStorageItem(
+      getChecklistProgressKey(selectedChecklist.id),
+      nextCheckedItems
     );
   };
 
   const resetChecks = () => {
+    if (!selectedChecklist) {
+      return;
+    }
+
     setCheckedItems([]);
+    removeStorageItem(getChecklistProgressKey(selectedChecklist.id));
     setMessage("");
   };
 
@@ -71,7 +128,10 @@ function ChecklistPage() {
     const content = `${selectedChecklist.title}
 
 ${selectedChecklist.items
-  .map((item, index) => `${index + 1}. ${item}`)
+  .map((item, index) => {
+    const checkbox = checkedItems.includes(index) ? "[x]" : "[ ]";
+    return `${checkbox} ${index + 1}. ${item}`;
+  })
   .join("\n")}`;
 
     await navigator.clipboard.writeText(content);
@@ -109,35 +169,62 @@ ${selectedChecklist.items
               {t("checklists.libraryTitle")}
             </p>
 
+            <label className="mb-5 grid gap-2">
+              <span className="font-semibold">{t("common.search")}</span>
+              <input
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder={t("checklists.searchPlaceholder")}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
+            </label>
+
             <div className="grid gap-4">
-              {checklists.map((checklist) => {
-                const isActive = selectedChecklist?.id === checklist.id;
+              {filteredChecklists.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-700 p-5 text-slate-400">
+                  {t("checklists.noResults")}
+                </div>
+              ) : (
+                filteredChecklists.map((checklist) => {
+                  const isActive = selectedChecklist?.id === checklist.id;
+                  const savedProgress = getStorageItem<number[]>(
+                    getChecklistProgressKey(checklist.id),
+                    []
+                  );
 
-                return (
-                  <button
-                    key={checklist.id}
-                    type="button"
-                    onClick={() => selectChecklist(checklist)}
-                    className={`rounded-2xl border p-5 text-left transition ${
-                      isActive
-                        ? "border-cyan-400 bg-cyan-400/10"
-                        : "border-slate-800 bg-slate-950 hover:border-cyan-400"
-                    }`}
-                  >
-                    <div className="mb-3 flex items-center justify-between gap-4">
-                      <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-cyan-300">
-                        {checklist.category}
-                      </span>
+                  return (
+                    <button
+                      key={checklist.id}
+                      type="button"
+                      onClick={() => selectChecklist(checklist)}
+                      className={`rounded-2xl border p-5 text-left transition ${
+                        isActive
+                          ? "border-cyan-400 bg-cyan-400/10"
+                          : "border-slate-800 bg-slate-950 hover:border-cyan-400"
+                      }`}
+                    >
+                      <div className="mb-3 flex items-center justify-between gap-4">
+                        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-cyan-300">
+                          {checklist.category}
+                        </span>
 
-                      <span className="text-sm text-slate-500">
-                        #{checklist.id}
-                      </span>
-                    </div>
+                        <span className="text-sm text-slate-500">
+                          #{checklist.id}
+                        </span>
+                      </div>
 
-                    <h3 className="text-lg font-semibold">{checklist.title}</h3>
-                  </button>
-                );
-              })}
+                      <h3 className="mb-3 text-lg font-semibold">
+                        {checklist.title}
+                      </h3>
+
+                      <p className="text-sm text-slate-400">
+                        {savedProgress.length}/{checklist.items.length}{" "}
+                        {t("checklists.completed")}
+                      </p>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </aside>
 

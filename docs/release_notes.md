@@ -1,5 +1,104 @@
 # QA Buddy — Release Notes
 
+## Version 0.2.0 — Persistence & UX
+
+### Release Summary
+
+QA Buddy v0.2.0 improves persistence and user experience.
+
+This version prepares the project for a future offline Android version by adding local storage, saved documents, search and Markdown export.
+
+---
+
+## Added
+
+### Checklist Library
+
+- Persistent checklist progress with localStorage
+- Separate progress for each checklist
+- Progress is saved after page reload
+- Progress remains after language switching
+- Reset progress button
+
+### Search
+
+- Search by checklist title
+- Search by checklist category
+- Search by checklist item
+- Search by interview question
+- Search by interview category
+- Search by short answer
+- Search by detailed answer
+- Empty search result states
+
+### Bug Report Generator
+
+- Save generated bug reports
+- View saved bug reports
+- Copy saved bug reports
+- Delete saved bug reports
+- Export current bug report to Markdown
+- Export saved bug report to Markdown
+
+### Test Case Generator
+
+- Save generated test cases
+- View saved test cases
+- Copy saved test cases
+- Delete saved test cases
+- Export current test case to Markdown
+- Export saved test case to Markdown
+
+---
+
+## Technical Changes
+
+- Added localStorage service
+- Added Markdown export utility
+- Improved frontend state persistence
+- Improved user experience for generated documents
+- Added feature branch workflow for v0.2.0
+
+---
+
+## QA Notes
+
+Recommended checks:
+
+- checklist progress persists after reload
+- checklist progress is separate for each checklist
+- checklist progress remains after EN/RU switch
+- search works in EN and RU
+- saved bug reports remain after reload
+- saved test cases remain after reload
+- copy/delete actions work for saved documents
+- Markdown export downloads `.md` files
+- generated Markdown files contain correct content
+
+---
+
+## Known Limitations
+
+- Data is still stored locally in browser localStorage
+- No database yet
+- No authentication
+- No cloud sync
+- No PDF export yet
+- No deployed production version yet
+
+---
+
+## Next Planned Improvements
+
+- Prepare frontend offline mode
+- Move Android data usage away from backend dependency
+- Add Capacitor
+- Build Android APK
+- Test Android offline MVP
+- Prepare RuStore release candidate
+
+---
+
 ## Version 0.1.0 — QA Buddy MVP
 
 ### Release Summary
@@ -63,81 +162,3 @@ The application helps users create bug reports, generate test cases, use QA chec
 - Bug Reports
 - Release Notes
 - Project screenshots
-
----
-
-## Implemented API Endpoints
-
-### Health
-
-- GET /api/health
-
-### Bug Reports
-
-- POST /api/bug-reports/generate
-
-### Test Cases
-
-- POST /api/test-cases/generate
-
-### Checklists
-
-- GET /api/checklists
-- GET /api/checklists/{checklist_id}
-
-Supports language query parameter:
-
-- ?lang=en
-- ?lang=ru
-
-### Interview
-
-- GET /api/interview/questions
-- GET /api/interview/questions/{question_id}
-- GET /api/interview/random
-
-Supports language query parameter:
-
-- ?lang=en
-- ?lang=ru
-
----
-
-## Test Status
-
-Backend tests are implemented for:
-
-- health endpoint
-- bug report generation
-- test case generation
-- checklist endpoints
-- interview endpoints
-- bilingual data
-- validation errors
-- 404 errors
-
----
-
-## Known Limitations
-
-- No database yet
-- No authentication
-- No PDF / Markdown export yet
-- No deployed production version yet
-- Checklist progress is not persisted yet
-- Generated bug reports and test cases are not stored yet
-
----
-
-## Next Planned Improvements
-
-- Add localStorage for checklist progress
-- Add search and filters
-- Add more checklist categories
-- Add more interview questions
-- Add SQLite or PostgreSQL
-- Add export to Markdown / PDF
-- Add deployment
-- Add Portfolio Builder module
-- Add API Sandbox module
-- Add Fake Shop for QA practice

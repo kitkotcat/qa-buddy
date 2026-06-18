@@ -293,15 +293,31 @@ This release includes the first stable MVP version of QA Buddy:
 - Pytest backend tests
 - GitHub documentation and screenshots
 
+## Version 0.2.0 — Persistence & UX
+
+The next version improves user experience and prepares the project for a future offline Android version.
+
+Implemented in the `feature/v0.2.0-persistence-ux` branch:
+
+- persistent checklist progress with localStorage
+- search for checklists
+- search for interview questions
+- saved bug reports
+- saved test cases
+- copy / delete saved documents
+- export generated bug reports to Markdown
+- export generated test cases to Markdown
+
 ## Roadmap
 
 Planned improvements:
 
 - add screenshots to README
-- add localStorage for checklist progress
-- add search and filters
+- add localStorage for checklist progress ✅
+- add search and filters ✅
 - add more interview questions
-- add export to Markdown / PDF
+- add export to Markdown ✅
+- add export to PDF
 - add SQLite or PostgreSQL
 - add authentication
 - add deployment

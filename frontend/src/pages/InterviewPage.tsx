@@ -14,6 +14,7 @@ function InterviewPage() {
   const [selectedQuestion, setSelectedQuestion] =
     useState<InterviewQuestion | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [answerMode, setAnswerMode] = useState<"short" | "detailed">("short");
   const [isLoading, setIsLoading] = useState(true);
   const [isQuestionLoading, setIsQuestionLoading] = useState(false);
@@ -21,27 +22,29 @@ function InterviewPage() {
   const [copyMessage, setCopyMessage] = useState("");
 
   useEffect(() => {
-    loadQuestions();
-  }, [language]);
+    const loadQuestions = async () => {
+      setIsLoading(true);
+      setError("");
+      setCopyMessage("");
 
-  const loadQuestions = async () => {
-    setIsLoading(true);
-    setError("");
+      try {
+        const data = await getInterviewQuestionsApi(language);
+        setQuestions(data);
 
-    try {
-      const data = await getInterviewQuestionsApi(language);
-      setQuestions(data);
-
-      if (data.length > 0) {
-        setSelectedQuestion(data[0]);
-        setSelectedCategory("All");
+        if (data.length > 0) {
+          setSelectedQuestion(data[0]);
+          setSelectedCategory("All");
+          setAnswerMode("short");
+        }
+      } catch {
+        setError(t("interview.loadError"));
+      } finally {
+        setIsLoading(false);
       }
-    } catch {
-      setError(t("interview.loadError"));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    loadQuestions();
+  }, [language, t]);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
@@ -52,14 +55,32 @@ function InterviewPage() {
   }, [questions]);
 
   const filteredQuestions = useMemo(() => {
-    if (selectedCategory === "All") {
-      return questions;
-    }
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase();
 
-    return questions.filter(
-      (question) => question.category === selectedCategory
-    );
-  }, [questions, selectedCategory]);
+    return questions.filter((question) => {
+      const matchesCategory =
+        selectedCategory === "All" || question.category === selectedCategory;
+
+      if (!matchesCategory) {
+        return false;
+      }
+
+      if (!normalizedSearchQuery) {
+        return true;
+      }
+
+      const searchableText = [
+        question.category,
+        question.question,
+        question.short_answer,
+        question.detailed_answer,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(normalizedSearchQuery);
+    });
+  }, [questions, searchQuery, selectedCategory]);
 
   const selectQuestion = async (id: number) => {
     setIsQuestionLoading(true);
@@ -102,6 +123,7 @@ function InterviewPage() {
       const data = await getRandomInterviewQuestionApi(language);
       setSelectedQuestion(data);
       setSelectedCategory("All");
+      setSearchQuery("");
     } catch {
       setError(t("interview.loadRandomError"));
     } finally {
@@ -119,13 +141,18 @@ function InterviewPage() {
         ? selectedQuestion.short_answer
         : selectedQuestion.detailed_answer;
 
+    const answerTitle =
+      answerMode === "short"
+        ? t("interview.shortAnswer")
+        : t("interview.detailedAnswer");
+
     const formattedAnswer = `${t("interview.selectedQuestion")}: ${
       selectedQuestion.question
     }
 
 ${t("common.category")}: ${selectedQuestion.category}
 
-${answerMode === "short" ? t("interview.shortAnswer") : t("interview.detailedAnswer")}:
+${answerTitle}:
 ${answer}`;
 
     try {
@@ -178,6 +205,16 @@ ${answer}`;
               </h2>
             </div>
 
+            <label className="mb-5 grid gap-2">
+              <span className="font-semibold">{t("common.search")}</span>
+              <input
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder={t("interview.searchPlaceholder")}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-cyan-400"
+              />
+            </label>
+
             <div className="mb-6 flex flex-wrap gap-3">
               {categories.map((category) => (
                 <button
@@ -190,7 +227,11 @@ ${answer}`;
                       : "border border-slate-700 text-slate-300 hover:border-cyan-400"
                   }`}
                 >
-                  {category === "All" ? (language === "ru" ? "Все" : "All") : category}
+                  {category === "All"
+                    ? language === "ru"
+                      ? "Все"
+                      : "All"
+                    : category}
                 </button>
               ))}
             </div>
@@ -204,36 +245,42 @@ ${answer}`;
             </button>
 
             <div className="grid max-h-[620px] gap-4 overflow-auto pr-1">
-              {filteredQuestions.map((question) => {
-                const isActive = selectedQuestion?.id === question.id;
+              {filteredQuestions.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-700 p-5 text-slate-400">
+                  {t("interview.noResults")}
+                </div>
+              ) : (
+                filteredQuestions.map((question) => {
+                  const isActive = selectedQuestion?.id === question.id;
 
-                return (
-                  <button
-                    key={question.id}
-                    type="button"
-                    onClick={() => selectQuestion(question.id)}
-                    className={`rounded-2xl border p-5 text-left transition ${
-                      isActive
-                        ? "border-cyan-400 bg-cyan-400/10"
-                        : "border-slate-800 bg-slate-950 hover:border-cyan-400"
-                    }`}
-                  >
-                    <div className="mb-3 flex items-center justify-between gap-4">
-                      <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-cyan-300">
-                        {question.category}
-                      </span>
+                  return (
+                    <button
+                      key={question.id}
+                      type="button"
+                      onClick={() => selectQuestion(question.id)}
+                      className={`rounded-2xl border p-5 text-left transition ${
+                        isActive
+                          ? "border-cyan-400 bg-cyan-400/10"
+                          : "border-slate-800 bg-slate-950 hover:border-cyan-400"
+                      }`}
+                    >
+                      <div className="mb-3 flex items-center justify-between gap-4">
+                        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-cyan-300">
+                          {question.category}
+                        </span>
 
-                      <span className="text-sm text-slate-500">
-                        #{question.id}
-                      </span>
-                    </div>
+                        <span className="text-sm text-slate-500">
+                          #{question.id}
+                        </span>
+                      </div>
 
-                    <h3 className="text-lg font-semibold leading-7">
-                      {question.question}
-                    </h3>
-                  </button>
-                );
-              })}
+                      <h3 className="text-lg font-semibold leading-7">
+                        {question.question}
+                      </h3>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </aside>
 
