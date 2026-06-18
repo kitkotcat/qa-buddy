@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { generateBugReportApi } from "../api/bugReports";
 import { useLanguage } from "../i18n/LanguageContext";
+import {
+  getStorageItem,
+  setStorageItem,
+} from "../storage/localStorageService";
+
+const SAVED_BUG_REPORTS_KEY = "qa-buddy-saved-bug-reports";
 
 const initialForm = {
   project_name: "",
@@ -15,15 +21,51 @@ const initialForm = {
   attachment_link: "",
 };
 
+type SavedBugReport = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+};
+
+function createId() {
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 function BugReportPage() {
   const { language, t } = useLanguage();
+
   const [form, setForm] = useState(initialForm);
   const [generatedReport, setGeneratedReport] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [savedReports, setSavedReports] = useState<SavedBugReport[]>(() =>
+    getStorageItem<SavedBugReport[]>(SAVED_BUG_REPORTS_KEY, [])
+  );
 
   const severityOptions = ["Blocker", "Critical", "Major", "Minor", "Trivial"];
   const priorityOptions = ["High", "Medium", "Low"];
+
+  const labels =
+    language === "ru"
+      ? {
+          save: "Сохранить отчёт",
+          savedTitle: "Сохранённые баг-репорты",
+          noSaved: "Пока нет сохранённых баг-репортов.",
+          saved: "Баг-репорт сохранён.",
+          copySaved: "Скопировать",
+          deleteSaved: "Удалить",
+          createdAt: "Создано",
+        }
+      : {
+          save: "Save report",
+          savedTitle: "Saved bug reports",
+          noSaved: "No saved bug reports yet.",
+          saved: "Bug report saved.",
+          copySaved: "Copy",
+          deleteSaved: "Delete",
+          createdAt: "Created",
+        };
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((currentForm) => ({
@@ -128,6 +170,37 @@ ${form.attachment_link || "Not specified"}`;
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const saveReport = () => {
+    if (!generatedReport) {
+      return;
+    }
+
+    const nextReport: SavedBugReport = {
+      id: createId(),
+      title: form.summary || form.project_name || "Bug report",
+      content: generatedReport,
+      createdAt: new Date().toLocaleString(),
+    };
+
+    const nextReports = [nextReport, ...savedReports];
+
+    setSavedReports(nextReports);
+    setStorageItem(SAVED_BUG_REPORTS_KEY, nextReports);
+    setMessage(labels.saved);
+  };
+
+  const deleteSavedReport = (id: string) => {
+    const nextReports = savedReports.filter((report) => report.id !== id);
+
+    setSavedReports(nextReports);
+    setStorageItem(SAVED_BUG_REPORTS_KEY, nextReports);
+  };
+
+  const copySavedReport = async (content: string) => {
+    await navigator.clipboard.writeText(content);
+    setMessage(t("common.copied"));
   };
 
   const clearForm = () => {
@@ -324,16 +397,27 @@ ${form.attachment_link || "Not specified"}`;
         </form>
 
         <article className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
-          <div className="mb-5 flex items-center justify-between gap-4">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-2xl font-bold">{t("bugReports.resultTitle")}</h2>
 
-            <button
-              type="button"
-              onClick={copyReport}
-              className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-cyan-300"
-            >
-              {t("bugReports.copyButton")}
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={copyReport}
+                className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-cyan-300"
+              >
+                {t("bugReports.copyButton")}
+              </button>
+
+              <button
+                type="button"
+                onClick={saveReport}
+                disabled={!generatedReport}
+                className="rounded-xl border border-cyan-400 px-4 py-2 font-semibold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {labels.save}
+              </button>
+            </div>
           </div>
 
           <pre className="min-h-[500px] whitespace-pre-wrap rounded-2xl border border-slate-800 bg-slate-950 p-5 leading-8 text-slate-200">
@@ -341,6 +425,54 @@ ${form.attachment_link || "Not specified"}`;
           </pre>
         </article>
       </div>
+
+      <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
+        <h2 className="mb-5 text-2xl font-bold">{labels.savedTitle}</h2>
+
+        {savedReports.length === 0 ? (
+          <p className="text-slate-400">{labels.noSaved}</p>
+        ) : (
+          <div className="grid gap-4">
+            {savedReports.map((report) => (
+              <article
+                key={report.id}
+                className="rounded-2xl border border-slate-800 bg-slate-950 p-5"
+              >
+                <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-bold">{report.title}</h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {labels.createdAt}: {report.createdAt}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => copySavedReport(report.content)}
+                      className="rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+                    >
+                      {labels.copySaved}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => deleteSavedReport(report.id)}
+                      className="rounded-xl border border-red-500/60 px-4 py-2 text-sm font-semibold text-red-300 transition hover:bg-red-500/10"
+                    >
+                      {labels.deleteSaved}
+                    </button>
+                  </div>
+                </div>
+
+                <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-900 p-4 text-sm leading-7 text-slate-300">
+                  {report.content}
+                </pre>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
     </section>
   );
 }
