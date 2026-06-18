@@ -1,5 +1,17 @@
 # QA Buddy
 
+<p align="left">
+  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img alt="Pytest" src="https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" />
+  <img alt="Status" src="https://img.shields.io/badge/Status-MVP-blueviolet?style=for-the-badge" />
+  <img alt="Portfolio" src="https://img.shields.io/badge/Portfolio_Project-Junior_QA-success?style=for-the-badge" />
+</p>
+
+
 QA Buddy is a fullstack pet-project for beginner QA engineers.
 
 The application helps junior QA engineers create bug reports, generate test cases, use QA checklists and prepare for QA interviews.
