@@ -2,9 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { getChecklistsApi } from "../api/checklists";
 import type { Checklist } from "../api/checklists";
 import { useLanguage } from "../i18n/LanguageContext";
+import {
+  getStorageItem,
+  removeStorageItem,
+  setStorageItem,
+} from "../storage/localStorageService";
+
+function getChecklistProgressKey(checklistId: number) {
+  return `qa-buddy-checklist-progress-${checklistId}`;
+}
 
 function ChecklistPage() {
   const { language, t } = useLanguage();
+
   const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [selectedChecklist, setSelectedChecklist] = useState<Checklist | null>(
     null
@@ -26,8 +36,15 @@ function ChecklistPage() {
       setChecklists(data);
 
       if (data.length > 0) {
-        setSelectedChecklist(data[0]);
-        setCheckedItems([]);
+        const firstChecklist = data[0];
+        setSelectedChecklist(firstChecklist);
+
+        const savedProgress = getStorageItem<number[]>(
+          getChecklistProgressKey(firstChecklist.id),
+          []
+        );
+
+        setCheckedItems(savedProgress);
       }
     } catch {
       setMessage(t("checklists.loadError"));
@@ -46,20 +63,39 @@ function ChecklistPage() {
 
   const selectChecklist = (checklist: Checklist) => {
     setSelectedChecklist(checklist);
-    setCheckedItems([]);
+
+    const savedProgress = getStorageItem<number[]>(
+      getChecklistProgressKey(checklist.id),
+      []
+    );
+
+    setCheckedItems(savedProgress);
     setMessage("");
   };
 
   const toggleItem = (index: number) => {
-    setCheckedItems((currentItems) =>
-      currentItems.includes(index)
-        ? currentItems.filter((item) => item !== index)
-        : [...currentItems, index]
+    if (!selectedChecklist) {
+      return;
+    }
+
+    const nextCheckedItems = checkedItems.includes(index)
+      ? checkedItems.filter((item) => item !== index)
+      : [...checkedItems, index];
+
+    setCheckedItems(nextCheckedItems);
+    setStorageItem(
+      getChecklistProgressKey(selectedChecklist.id),
+      nextCheckedItems
     );
   };
 
   const resetChecks = () => {
+    if (!selectedChecklist) {
+      return;
+    }
+
     setCheckedItems([]);
+    removeStorageItem(getChecklistProgressKey(selectedChecklist.id));
     setMessage("");
   };
 
@@ -71,7 +107,10 @@ function ChecklistPage() {
     const content = `${selectedChecklist.title}
 
 ${selectedChecklist.items
-  .map((item, index) => `${index + 1}. ${item}`)
+  .map((item, index) => {
+    const checkbox = checkedItems.includes(index) ? "[x]" : "[ ]";
+    return `${checkbox} ${index + 1}. ${item}`;
+  })
   .join("\n")}`;
 
     await navigator.clipboard.writeText(content);
@@ -112,6 +151,10 @@ ${selectedChecklist.items
             <div className="grid gap-4">
               {checklists.map((checklist) => {
                 const isActive = selectedChecklist?.id === checklist.id;
+                const savedProgress = getStorageItem<number[]>(
+                  getChecklistProgressKey(checklist.id),
+                  []
+                );
 
                 return (
                   <button
@@ -134,7 +177,14 @@ ${selectedChecklist.items
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-semibold">{checklist.title}</h3>
+                    <h3 className="mb-3 text-lg font-semibold">
+                      {checklist.title}
+                    </h3>
+
+                    <p className="text-sm text-slate-400">
+                      {savedProgress.length}/{checklist.items.length}{" "}
+                      {t("checklists.completed")}
+                    </p>
                   </button>
                 );
               })}
