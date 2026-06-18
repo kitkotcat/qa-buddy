@@ -8,8 +8,12 @@ export type InterviewQuestion = {
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-export async function getInterviewQuestionsApi(): Promise<InterviewQuestion[]> {
-  const response = await fetch(`${API_BASE_URL}/api/interview/questions`);
+export async function getInterviewQuestionsApi(
+  language = "en"
+): Promise<InterviewQuestion[]> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/interview/questions?lang=${language}`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to load interview questions");
@@ -19,9 +23,12 @@ export async function getInterviewQuestionsApi(): Promise<InterviewQuestion[]> {
 }
 
 export async function getInterviewQuestionByIdApi(
-  id: number
+  id: number,
+  language = "en"
 ): Promise<InterviewQuestion> {
-  const response = await fetch(`${API_BASE_URL}/api/interview/questions/${id}`);
+  const response = await fetch(
+    `${API_BASE_URL}/api/interview/questions/${id}?lang=${language}`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to load interview question");
@@ -30,8 +37,12 @@ export async function getInterviewQuestionByIdApi(
   return response.json();
 }
 
-export async function getRandomInterviewQuestionApi(): Promise<InterviewQuestion> {
-  const response = await fetch(`${API_BASE_URL}/api/interview/random`);
+export async function getRandomInterviewQuestionApi(
+  language = "en"
+): Promise<InterviewQuestion> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/interview/random?lang=${language}`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to load random interview question");

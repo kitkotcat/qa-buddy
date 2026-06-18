@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class InterviewQuestion(BaseModel):
+class InterviewQuestionResponse(BaseModel):
     id: int
     category: str
     question: str

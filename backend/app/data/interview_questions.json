@@ -1,100 +1,230 @@
 [
   {
     "id": 1,
-    "category": "Theory QA",
-    "question": "What is software testing?",
-    "short_answer": "Software testing is the process of checking software to find defects and verify that it works according to requirements.",
-    "detailed_answer": "Software testing is a process of evaluating a software product to make sure it meets requirements, works correctly, and does not contain critical defects. Testing helps improve product quality and reduce risks before release."
+    "category": {
+      "en": "Theory QA",
+      "ru": "Теория QA"
+    },
+    "question": {
+      "en": "What is software testing?",
+      "ru": "Что такое тестирование программного обеспечения?"
+    },
+    "short_answer": {
+      "en": "Software testing is the process of checking whether a product works according to requirements and user expectations.",
+      "ru": "Тестирование ПО — это процесс проверки, работает ли продукт согласно требованиям и ожиданиям пользователя."
+    },
+    "detailed_answer": {
+      "en": "Software testing helps find defects, reduce risks and improve product quality. A QA engineer checks functionality, usability, API behavior, edge cases and possible negative scenarios.",
+      "ru": "Тестирование ПО помогает находить дефекты, снижать риски и повышать качество продукта. QA-инженер проверяет функциональность, удобство использования, работу API, граничные значения и негативные сценарии."
+    }
   },
   {
     "id": 2,
-    "category": "Theory QA",
-    "question": "What is the difference between verification and validation?",
-    "short_answer": "Verification checks whether we build the product correctly. Validation checks whether we build the correct product.",
-    "detailed_answer": "Verification answers the question: Are we building the product according to requirements and specifications? Validation answers the question: Does the product solve the user's real needs? For example, reviewing requirements is verification, while checking the final feature from a user's point of view is validation."
+    "category": {
+      "en": "Theory QA",
+      "ru": "Теория QA"
+    },
+    "question": {
+      "en": "What is the difference between verification and validation?",
+      "ru": "В чём разница между verification и validation?"
+    },
+    "short_answer": {
+      "en": "Verification checks whether we build the product right. Validation checks whether we build the right product.",
+      "ru": "Verification проверяет, правильно ли мы создаём продукт. Validation проверяет, тот ли продукт мы создаём."
+    },
+    "detailed_answer": {
+      "en": "Verification is usually related to requirements, documentation, design and implementation checks. Validation is focused on whether the product solves the real user need and works as expected in real scenarios.",
+      "ru": "Verification чаще относится к проверке требований, документации, дизайна и реализации. Validation фокусируется на том, решает ли продукт реальную задачу пользователя и работает ли ожидаемо в реальных сценариях."
+    }
   },
   {
     "id": 3,
-    "category": "Bug reports",
-    "question": "What fields should a good bug report contain?",
-    "short_answer": "A good bug report should contain summary, environment, steps to reproduce, actual result, expected result, severity, priority and attachments.",
-    "detailed_answer": "A good bug report should be clear and reproducible. It usually includes project/module, environment, summary, preconditions, steps to reproduce, actual result, expected result, severity, priority, attachments and additional notes. The main goal is to help the developer reproduce and fix the bug quickly."
+    "category": {
+      "en": "Bug reports",
+      "ru": "Баг-репорты"
+    },
+    "question": {
+      "en": "What should a good bug report contain?",
+      "ru": "Что должен содержать хороший баг-репорт?"
+    },
+    "short_answer": {
+      "en": "A good bug report should contain summary, environment, preconditions, steps, actual result, expected result, severity, priority and attachments if needed.",
+      "ru": "Хороший баг-репорт должен содержать summary, окружение, предусловия, шаги, фактический результат, ожидаемый результат, severity, priority и вложения при необходимости."
+    },
+    "detailed_answer": {
+      "en": "A good bug report should be clear, reproducible and useful for developers. It should explain where the issue happens, how to reproduce it, what actually happens and what should happen instead.",
+      "ru": "Хороший баг-репорт должен быть понятным, воспроизводимым и полезным для разработчиков. Он должен объяснять, где возникает проблема, как её воспроизвести, что происходит фактически и что должно происходить."
+    }
   },
   {
     "id": 4,
-    "category": "Bug reports",
-    "question": "What is the difference between severity and priority?",
-    "short_answer": "Severity shows how serious the defect is. Priority shows how urgently it should be fixed.",
-    "detailed_answer": "Severity describes the impact of a defect on the system. For example, a crash or data loss usually has high severity. Priority describes business urgency. A minor visual issue on the main page can have high priority if it affects many users or business reputation."
+    "category": {
+      "en": "Bug reports",
+      "ru": "Баг-репорты"
+    },
+    "question": {
+      "en": "What is the difference between severity and priority?",
+      "ru": "В чём разница между severity и priority?"
+    },
+    "short_answer": {
+      "en": "Severity shows how serious the bug is for the system. Priority shows how soon it should be fixed.",
+      "ru": "Severity показывает, насколько серьёзный баг для системы. Priority показывает, насколько срочно его нужно исправить."
+    },
+    "detailed_answer": {
+      "en": "Severity is about technical and business impact. Priority is about planning and urgency. For example, a typo on the main page can have low severity but high priority if it affects brand reputation.",
+      "ru": "Severity — это влияние бага на систему и бизнес. Priority — это срочность исправления. Например, опечатка на главной странице может иметь низкую severity, но высокий priority, если она влияет на репутацию бренда."
+    }
   },
   {
     "id": 5,
-    "category": "Test cases",
-    "question": "What is a test case?",
-    "short_answer": "A test case is a documented set of steps, conditions and expected results used to verify specific functionality.",
-    "detailed_answer": "A test case describes what should be tested, under what conditions, what steps should be performed, and what result is expected. It helps testers check functionality consistently and makes testing repeatable."
+    "category": {
+      "en": "Test cases",
+      "ru": "Тест-кейсы"
+    },
+    "question": {
+      "en": "What is a test case?",
+      "ru": "Что такое тест-кейс?"
+    },
+    "short_answer": {
+      "en": "A test case is a documented scenario with preconditions, steps, expected result and status.",
+      "ru": "Тест-кейс — это документированный сценарий с предусловиями, шагами, ожидаемым результатом и статусом."
+    },
+    "detailed_answer": {
+      "en": "A test case helps QA engineers verify specific functionality in a structured way. It usually includes ID, title, preconditions, steps, expected result, actual result, status, priority and related requirement.",
+      "ru": "Тест-кейс помогает QA-инженеру структурированно проверить конкретную функциональность. Обычно он содержит ID, название, предусловия, шаги, ожидаемый результат, фактический результат, статус, приоритет и связь с требованием."
+    }
   },
   {
     "id": 6,
-    "category": "Test cases",
-    "question": "What is the difference between a checklist and a test case?",
-    "short_answer": "A checklist is a high-level list of checks. A test case is more detailed and contains steps and expected results.",
-    "detailed_answer": "A checklist usually contains short points to verify, for example: check login with valid data. A test case is more formal and detailed. It contains preconditions, steps, test data, expected result and sometimes priority or test type."
+    "category": {
+      "en": "HTTP",
+      "ru": "HTTP"
+    },
+    "question": {
+      "en": "What does status code 404 mean?",
+      "ru": "Что означает статус-код 404?"
+    },
+    "short_answer": {
+      "en": "404 Not Found means that the requested resource was not found on the server.",
+      "ru": "404 Not Found означает, что запрошенный ресурс не найден на сервере."
+    },
+    "detailed_answer": {
+      "en": "For example, if the client sends a request to an endpoint that does not exist, the server can return 404. In testing, QA should verify both the status code and the error response body.",
+      "ru": "Например, если клиент отправляет запрос на несуществующий endpoint, сервер может вернуть 404. При тестировании QA должен проверить не только статус-код, но и тело ответа с ошибкой."
+    }
   },
   {
     "id": 7,
-    "category": "HTTP",
-    "question": "What is HTTP?",
-    "short_answer": "HTTP is a protocol used for communication between client and server on the web.",
-    "detailed_answer": "HTTP stands for HyperText Transfer Protocol. It is used when a browser, mobile app or API client sends requests to a server and receives responses. HTTP methods include GET, POST, PUT, PATCH and DELETE."
+    "category": {
+      "en": "API testing",
+      "ru": "API-тестирование"
+    },
+    "question": {
+      "en": "What do you usually check during API testing?",
+      "ru": "Что обычно проверяют при API-тестировании?"
+    },
+    "short_answer": {
+      "en": "I check status codes, response body, response schema, headers, validation, negative cases and response time.",
+      "ru": "Я проверяю статус-коды, тело ответа, схему ответа, headers, валидацию, негативные сценарии и время ответа."
+    },
+    "detailed_answer": {
+      "en": "During API testing I check positive and negative scenarios, required fields, invalid data, authorization, error messages, response structure and whether API behavior matches requirements.",
+      "ru": "При API-тестировании я проверяю позитивные и негативные сценарии, обязательные поля, некорректные данные, авторизацию, сообщения об ошибках, структуру ответа и соответствие поведения API требованиям."
+    }
   },
   {
     "id": 8,
-    "category": "HTTP",
-    "question": "What is the difference between GET and POST?",
-    "short_answer": "GET is used to receive data. POST is used to send or create data.",
-    "detailed_answer": "GET requests are usually used to retrieve information from the server and should not change data. POST requests are used to send data to the server, for example to create a user, submit a form or create an order."
+    "category": {
+      "en": "SQL basics",
+      "ru": "Основы SQL"
+    },
+    "question": {
+      "en": "What is SQL used for?",
+      "ru": "Для чего используется SQL?"
+    },
+    "short_answer": {
+      "en": "SQL is used to work with relational databases: select, insert, update and delete data.",
+      "ru": "SQL используется для работы с реляционными базами данных: выборки, добавления, обновления и удаления данных."
+    },
+    "detailed_answer": {
+      "en": "For QA engineers SQL is useful for checking test data, verifying database changes after actions in UI or API, and preparing data for test scenarios.",
+      "ru": "Для QA-инженера SQL полезен для проверки тестовых данных, проверки изменений в базе после действий в UI или API, а также для подготовки данных под тестовые сценарии."
+    }
   },
   {
     "id": 9,
-    "category": "API testing",
-    "question": "What do you usually check during API testing?",
-    "short_answer": "I check status code, response body, required fields, data types, validation, error messages and response time.",
-    "detailed_answer": "During API testing, I check that the endpoint returns the correct status code, response body structure, required fields, correct data types, validation for invalid data, error response format, authorization rules and response time. I can use Postman or Swagger for this."
+    "category": {
+      "en": "DevTools",
+      "ru": "DevTools"
+    },
+    "question": {
+      "en": "What do you use DevTools for?",
+      "ru": "Для чего ты используешь DevTools?"
+    },
+    "short_answer": {
+      "en": "I use DevTools to inspect elements, check console errors, network requests, status codes and response data.",
+      "ru": "Я использую DevTools для проверки элементов, ошибок в консоли, network-запросов, статус-кодов и данных ответа."
+    },
+    "detailed_answer": {
+      "en": "DevTools helps QA engineers analyze frontend behavior, reproduce issues, check API requests from the browser, inspect payloads, response bodies, headers and performance problems.",
+      "ru": "DevTools помогает QA-инженеру анализировать поведение frontend, воспроизводить ошибки, проверять API-запросы из браузера, смотреть payload, response body, headers и проблемы производительности."
+    }
   },
   {
     "id": 10,
-    "category": "SQL basics",
-    "question": "What is SQL used for?",
-    "short_answer": "SQL is used to work with databases: read, create, update and delete data.",
-    "detailed_answer": "SQL stands for Structured Query Language. QA engineers can use SQL to check data in a database, verify that records were created correctly, compare UI data with database data and prepare test data."
+    "category": {
+      "en": "Postman",
+      "ru": "Postman"
+    },
+    "question": {
+      "en": "What is Postman used for?",
+      "ru": "Для чего используется Postman?"
+    },
+    "short_answer": {
+      "en": "Postman is used for sending API requests and checking responses.",
+      "ru": "Postman используется для отправки API-запросов и проверки ответов."
+    },
+    "detailed_answer": {
+      "en": "In Postman QA engineers can create requests, test different methods like GET, POST, PUT, PATCH and DELETE, check status codes, response body, headers and save collections.",
+      "ru": "В Postman QA-инженер может создавать запросы, тестировать методы GET, POST, PUT, PATCH и DELETE, проверять статус-коды, тело ответа, headers и сохранять коллекции."
+    }
   },
   {
     "id": 11,
-    "category": "DevTools",
-    "question": "How can QA use Chrome DevTools?",
-    "short_answer": "QA can use DevTools to inspect elements, check console errors, analyze network requests and test responsive design.",
-    "detailed_answer": "Chrome DevTools helps QA engineers inspect HTML and CSS, check JavaScript console errors, analyze API requests in the Network tab, verify response status codes, check payloads and responses, simulate mobile screen sizes and investigate frontend issues."
+    "category": {
+      "en": "English interview",
+      "ru": "Интервью на английском"
+    },
+    "question": {
+      "en": "Tell me about yourself.",
+      "ru": "Расскажите о себе."
+    },
+    "short_answer": {
+      "en": "I am a beginner QA engineer. I study manual testing, API testing and Python automation. I want to gain real experience on a real product.",
+      "ru": "Я начинающий QA-инженер. Я изучаю ручное тестирование, API-тестирование и автоматизацию на Python. Сейчас моя цель — получить реальный опыт на настоящем продукте."
+    },
+    "detailed_answer": {
+      "en": "I have a technical background and I am actively developing my QA skills. I practice test documentation, API testing, DevTools, Postman and Python. I am motivated to grow as a QA engineer and work on real product tasks.",
+      "ru": "У меня технический бэкграунд, и я активно развиваю навыки QA. Я практикую тестовую документацию, API-тестирование, DevTools, Postman и Python. Я мотивирована развиваться как QA-инженер и работать над реальными продуктовыми задачами."
+    }
   },
   {
     "id": 12,
-    "category": "Postman",
-    "question": "What is Postman?",
-    "short_answer": "Postman is a tool for testing APIs by sending requests and checking responses.",
-    "detailed_answer": "Postman allows testers to send GET, POST, PUT, PATCH and DELETE requests, add headers, body and authorization, check response status codes and body, save collections and create simple API tests."
-  },
-  {
-    "id": 13,
-    "category": "English interview",
-    "question": "Tell me about yourself.",
-    "short_answer": "I am a beginner QA engineer. I study manual testing, API testing and Python automation. I want to gain real experience on a real product.",
-    "detailed_answer": "I am a beginner QA engineer with a technical background. I study manual testing, API testing, DevTools, Postman and Python automation. I have practice with test cases, checklists and bug reports. My main goal now is to gain real experience working on a real product and grow as a QA engineer."
-  },
-  {
-    "id": 14,
-    "category": "English interview",
-    "question": "Why do you want to become a QA engineer?",
-    "short_answer": "I like checking details, finding problems and improving product quality.",
-    "detailed_answer": "I want to become a QA engineer because I like analyzing products, checking details, finding defects and helping the team improve quality. I also like that QA combines technical skills, communication and product thinking."
+    "category": {
+      "en": "English interview",
+      "ru": "Интервью на английском"
+    },
+    "question": {
+      "en": "Why do you want to become a QA engineer?",
+      "ru": "Почему вы хотите стать QA-инженером?"
+    },
+    "short_answer": {
+      "en": "I like finding issues, analyzing details and improving product quality.",
+      "ru": "Мне нравится находить проблемы, анализировать детали и улучшать качество продукта."
+    },
+    "detailed_answer": {
+      "en": "I chose QA because it combines analytical thinking, attention to detail and communication. I enjoy checking how products work, finding bugs and helping the team deliver better quality.",
+      "ru": "Я выбрала QA, потому что эта профессия объединяет аналитическое мышление, внимание к деталям и коммуникацию. Мне нравится проверять, как работает продукт, находить баги и помогать команде делать продукт качественнее."
+    }
   }
 ]

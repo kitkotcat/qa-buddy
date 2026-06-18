@@ -4,7 +4,7 @@ import type { Checklist } from "../api/checklists";
 import { useLanguage } from "../i18n/LanguageContext";
 
 function ChecklistPage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [selectedChecklist, setSelectedChecklist] = useState<Checklist | null>(
     null
@@ -15,18 +15,19 @@ function ChecklistPage() {
 
   useEffect(() => {
     loadChecklists();
-  }, []);
+  }, [language]);
 
   const loadChecklists = async () => {
     setIsLoading(true);
     setMessage("");
 
     try {
-      const data = await getChecklistsApi();
+      const data = await getChecklistsApi(language);
       setChecklists(data);
 
       if (data.length > 0) {
         setSelectedChecklist(data[0]);
+        setCheckedItems([]);
       }
     } catch {
       setMessage(t("checklists.loadError"));

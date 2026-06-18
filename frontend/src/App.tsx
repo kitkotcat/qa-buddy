@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import BugReportPage from "./pages/BugReportPage";
@@ -10,13 +10,34 @@ import AboutPage from "./pages/AboutPage";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="bug-report-generator" element={<BugReportPage />} />
-        <Route path="test-case-generator" element={<TestCasePage />} />
-        <Route path="checklist-library" element={<ChecklistPage />} />
-        <Route path="interview-trainer" element={<InterviewPage />} />
-        <Route path="about" element={<AboutPage />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
+
+        <Route path="/bug-reports" element={<BugReportPage />} />
+        <Route
+          path="/bug-report-generator"
+          element={<Navigate to="/bug-reports" replace />}
+        />
+
+        <Route path="/test-cases" element={<TestCasePage />} />
+        <Route
+          path="/test-case-generator"
+          element={<Navigate to="/test-cases" replace />}
+        />
+
+        <Route path="/checklists" element={<ChecklistPage />} />
+        <Route
+          path="/checklist-library"
+          element={<Navigate to="/checklists" replace />}
+        />
+
+        <Route path="/interview" element={<InterviewPage />} />
+        <Route
+          path="/interview-trainer"
+          element={<Navigate to="/interview" replace />}
+        />
+
+        <Route path="/about" element={<AboutPage />} />
       </Route>
     </Routes>
   );

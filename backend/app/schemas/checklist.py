@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class Checklist(BaseModel):
+class ChecklistResponse(BaseModel):
     id: int
-    title: str
     category: str
+    title: str
     items: list[str]

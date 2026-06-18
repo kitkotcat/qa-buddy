@@ -8,7 +8,7 @@ import type { InterviewQuestion } from "../api/interview";
 import { useLanguage } from "../i18n/LanguageContext";
 
 function InterviewPage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
   const [selectedQuestion, setSelectedQuestion] =
@@ -22,18 +22,19 @@ function InterviewPage() {
 
   useEffect(() => {
     loadQuestions();
-  }, []);
+  }, [language]);
 
   const loadQuestions = async () => {
     setIsLoading(true);
     setError("");
 
     try {
-      const data = await getInterviewQuestionsApi();
+      const data = await getInterviewQuestionsApi(language);
       setQuestions(data);
 
       if (data.length > 0) {
         setSelectedQuestion(data[0]);
+        setSelectedCategory("All");
       }
     } catch {
       setError(t("interview.loadError"));
@@ -67,7 +68,7 @@ function InterviewPage() {
     setAnswerMode("short");
 
     try {
-      const data = await getInterviewQuestionByIdApi(id);
+      const data = await getInterviewQuestionByIdApi(id, language);
       setSelectedQuestion(data);
     } catch {
       setError(t("interview.loadSelectedError"));
@@ -98,7 +99,7 @@ function InterviewPage() {
     setAnswerMode("short");
 
     try {
-      const data = await getRandomInterviewQuestionApi();
+      const data = await getRandomInterviewQuestionApi(language);
       setSelectedQuestion(data);
       setSelectedCategory("All");
     } catch {
@@ -189,7 +190,7 @@ ${answer}`;
                       : "border border-slate-700 text-slate-300 hover:border-cyan-400"
                   }`}
                 >
-                  {category === "All" ? "All" : category}
+                  {category === "All" ? (language === "ru" ? "Все" : "All") : category}
                 </button>
               ))}
             </div>
