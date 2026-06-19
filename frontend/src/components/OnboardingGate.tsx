@@ -3,6 +3,7 @@ import {
   type ReactNode,
 } from "react";
 import QACat from "./QACat";
+import LanguageToggle from "./LanguageToggle";
 import beginnerCat from "../assets/qa-cat/qa-cat-beginner.webp";
 import learningCat from "../assets/qa-cat/qa-cat-learning.webp";
 import interviewCat from "../assets/qa-cat/qa-cat-interview.webp";
@@ -115,6 +116,9 @@ function OnboardingGate({
     <main className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100 sm:px-6 sm:py-12">
       <section className="mx-auto max-w-3xl">
         <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-2xl shadow-cyan-950/20 sm:p-8">
+          <div className="mb-5 flex justify-end">
+            <LanguageToggle showLabel />
+          </div>
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400 sm:text-sm">
             {labels.badge}
           </p>
