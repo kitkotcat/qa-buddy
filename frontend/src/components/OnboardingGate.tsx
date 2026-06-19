@@ -34,9 +34,9 @@ function OnboardingGate({
     language === "ru"
       ? {
           badge: "ДОБРО ПОЖАЛОВАТЬ В QA BUDDY",
-          title: "С чего начнём обучение?",
+          title: "С чего начнём подготовку?",
           description:
-            "Выбери свою текущую цель. QA Cat предложит подходящий маршрут.",
+            "Выбери цель. QA Cat предложит подходящий план практики.",
           beginnerTitle: "Я только начинаю",
           beginnerDescription:
             "Изучу основы QA и начну с коротких тестов.",
@@ -51,13 +51,13 @@ function OnboardingGate({
           privacy:
             "Выбор хранится только на этом устройстве. Регистрация и интернет не требуются.",
           cat:
-            "Привет! Я QA Cat. Помогу выбрать подходящий путь обучения.",
+            "Привет! Я QA Cat. Помогу выбрать подходящий план подготовки.",
         }
       : {
           badge: "WELCOME TO QA BUDDY",
-          title: "Where should we start?",
+          title: "Where should we start your preparation?",
           description:
-            "Choose your current goal. QA Cat will recommend a suitable learning path.",
+            "Choose your goal. QA Cat will recommend a suitable practice plan.",
           beginnerTitle: "I am just starting",
           beginnerDescription:
             "I want to learn QA basics and begin with short quizzes.",
@@ -72,7 +72,7 @@ function OnboardingGate({
           privacy:
             "Your choice is stored only on this device. No registration or internet connection is required.",
           cat:
-            "Hello! I am QA Cat. I will help you choose a suitable learning path.",
+            "Hello! I am QA Cat. I will help you choose a suitable preparation plan.",
         };
 
   const goals: Array<{
