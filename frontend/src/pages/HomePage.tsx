@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import QAThemeBackground from "../components/QAThemeBackground";
 import { useLanguage } from "../i18n/LanguageContext";
 
 function HomePage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const tools = [
     {
@@ -25,22 +26,46 @@ function HomePage() {
       description: t("home.interviewDescription"),
       path: "/interview",
     },
+    {
+      title:
+        language === "ru"
+          ? "Тест знаний QA"
+          : "QA Knowledge Quiz",
+      description:
+        language === "ru"
+          ? "Проверяй знания, изучай объяснения, сохраняй прогресс и повторяй ошибки вместе с QA Cat."
+          : "Test your knowledge, study explanations, save progress and review mistakes with QA Cat.",
+      path: "/quiz",
+    },
   ];
 
   return (
     <section>
-      <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:mb-12 sm:rounded-3xl sm:p-8">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400 sm:text-sm sm:tracking-[0.3em]">
-          {t("home.badge")}
-        </p>
+      <div className="relative mb-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:mb-12 sm:rounded-3xl sm:p-8">
+        <QAThemeBackground />
 
-        <h1 className="mb-5 max-w-4xl text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
-          {t("home.title")}
-        </h1>
+        <div className="relative z-10">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400 sm:text-sm sm:tracking-[0.3em]">
+            {t("home.badge")}
+          </p>
 
-        <p className="max-w-3xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9">
-          {t("home.description")}
-        </p>
+          <h1 className="mb-5 max-w-4xl text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
+            {t("home.title")}
+          </h1>
+
+          <p className="max-w-3xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9">
+            {t("home.description")}
+          </p>
+
+          <Link
+            to="/quiz"
+            className="mt-6 inline-flex rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300"
+          >
+            {language === "ru"
+              ? "Пройти тест знаний"
+              : "Start knowledge quiz"}
+          </Link>
+        </div>
       </div>
 
       <div className="mb-5 sm:mb-6">

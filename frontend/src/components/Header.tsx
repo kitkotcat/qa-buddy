@@ -14,6 +14,10 @@ function Header() {
     { to: "/test-cases", label: t("nav.testCases") },
     { to: "/checklists", label: t("nav.checklists") },
     { to: "/interview", label: t("nav.interview") },
+    {
+      to: "/quiz",
+      label: language === "ru" ? "Тест знаний" : "Knowledge Quiz",
+    },
     { to: "/about", label: t("nav.about") },
   ];
 

@@ -5,6 +5,7 @@ import BugReportPage from "./pages/BugReportPage";
 import TestCasePage from "./pages/TestCasePage";
 import ChecklistPage from "./pages/ChecklistPage";
 import InterviewPage from "./pages/InterviewPage";
+import QuizPage from "./pages/QuizPage";
 import AboutPage from "./pages/AboutPage";
 
 function App() {
@@ -37,7 +38,11 @@ function App() {
           element={<Navigate to="/interview" replace />}
         />
 
+        <Route path="/quiz" element={<QuizPage />} />
+
         <Route path="/about" element={<AboutPage />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
