@@ -18,4 +18,10 @@ npm-debug.log*
 .vscode/
 
 # macOS
+.DS_Store*.jks
+*.keystore
+*.p12
+keystore.properties
+docs/release/audit-v*/
 .DS_Store
+*.jks

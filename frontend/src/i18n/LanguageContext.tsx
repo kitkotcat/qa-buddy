@@ -1,4 +1,11 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { ReactNode } from "react";
 import { translations } from "./translations";
 import type { Language } from "./translations";
@@ -12,19 +19,33 @@ type LanguageContextValue = {
 
 const LANGUAGE_STORAGE_KEY = "qa-buddy-language";
 
-const LanguageContext = createContext<LanguageContextValue | null>(null);
+const LanguageContext =
+  createContext<LanguageContextValue | null>(null);
 
 function getStoredLanguage(): Language {
-  const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  try {
+    const storedLanguage = localStorage.getItem(
+      LANGUAGE_STORAGE_KEY
+    );
 
-  if (storedLanguage === "ru" || storedLanguage === "en") {
-    return storedLanguage;
+    if (
+      storedLanguage === "ru" ||
+      storedLanguage === "en"
+    ) {
+      return storedLanguage;
+    }
+  } catch {
+    // Local storage may be unavailable in restricted environments.
   }
 
-  return "en";
+  // Primary language for the first RuStore release.
+  return "ru";
 }
 
-function getTranslationValue(language: Language, key: string): string {
+function getTranslationValue(
+  language: Language,
+  key: string
+): string {
   const keys = key.split(".");
   let currentValue: unknown = translations[language];
 
@@ -34,35 +55,60 @@ function getTranslationValue(language: Language, key: string): string {
       currentValue !== null &&
       currentKey in currentValue
     ) {
-      currentValue = (currentValue as Record<string, unknown>)[currentKey];
+      currentValue = (
+        currentValue as Record<string, unknown>
+      )[currentKey];
     } else {
       return key;
     }
   }
 
-  return typeof currentValue === "string" ? currentValue : key;
+  return typeof currentValue === "string"
+    ? currentValue
+    : key;
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(getStoredLanguage);
+export function LanguageProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [language, setLanguageState] =
+    useState<Language>(getStoredLanguage);
 
-  const setLanguage = (nextLanguage: Language) => {
-    setLanguageState(nextLanguage);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
-  };
+  const setLanguage = useCallback(
+    (nextLanguage: Language) => {
+      setLanguageState(nextLanguage);
 
-  const toggleLanguage = () => {
+      try {
+        localStorage.setItem(
+          LANGUAGE_STORAGE_KEY,
+          nextLanguage
+        );
+      } catch {
+        // UI still works even when storage is unavailable.
+      }
+    },
+    []
+  );
+
+  const toggleLanguage = useCallback(() => {
     setLanguage(language === "en" ? "ru" : "en");
-  };
+  }, [language, setLanguage]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const value = useMemo(
     () => ({
       language,
       setLanguage,
       toggleLanguage,
-      t: (key: string) => getTranslationValue(language, key),
+      t: (key: string) =>
+        getTranslationValue(language, key),
     }),
-    [language]
+    [language, setLanguage, toggleLanguage]
   );
 
   return (
@@ -76,7 +122,9 @@ export function useLanguage() {
   const context = useContext(LanguageContext);
 
   if (!context) {
-    throw new Error("useLanguage must be used inside LanguageProvider");
+    throw new Error(
+      "useLanguage must be used inside LanguageProvider"
+    );
   }
 
   return context;
