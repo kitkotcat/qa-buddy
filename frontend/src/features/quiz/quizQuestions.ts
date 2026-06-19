@@ -1,3 +1,5 @@
+import { additionalQuizQuestions } from "./quizQuestionsExtra";
+
 export type QuizLanguage = "en" | "ru";
 
 export type LocalizedQuizText = {
@@ -18,7 +20,7 @@ export type QuizQuestion = {
   explanation: LocalizedQuizText;
 };
 
-export const quizQuestions: QuizQuestion[] = [
+const baseQuizQuestions: QuizQuestion[] = [
   {
     id: 1,
     category: "qa-theory",
@@ -344,3 +346,9 @@ export const quizQuestions: QuizQuestion[] = [
     },
   },
 ];
+
+export const quizQuestions: QuizQuestion[] = [
+  ...baseQuizQuestions,
+  ...additionalQuizQuestions,
+];
+

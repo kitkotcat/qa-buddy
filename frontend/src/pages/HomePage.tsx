@@ -1,9 +1,53 @@
 import { Link } from "react-router-dom";
 import QAThemeBackground from "../components/QAThemeBackground";
 import { useLanguage } from "../i18n/LanguageContext";
+import { quizQuestions } from "../features/quiz/quizQuestions";
+import { loadQuizProgress } from "../features/quiz/quizProgressService";
 
 function HomePage() {
   const { language, t } = useLanguage();
+  const quizProgress = loadQuizProgress();
+
+  const studiedCount =
+    quizProgress.studiedQuestionIds.length;
+
+  const learningPercentage =
+    quizQuestions.length === 0
+      ? 0
+      : Math.round(
+          (studiedCount / quizQuestions.length) * 100
+        );
+
+  const labels =
+    language === "ru"
+      ? {
+          progressTitle: "Твой учебный прогресс",
+          progressDescription:
+            "Продолжай обучение, повторяй ошибки и улучшай результат.",
+          studied: "Изучено вопросов",
+          best: "Лучший результат",
+          attempts: "Попыток",
+          mistakes: "Нужно повторить",
+          continueLearning: "Продолжить обучение",
+          quizTitle: "Тест знаний QA",
+          quizDescription:
+            "Проверяй знания, изучай объяснения, сохраняй прогресс и повторяй ошибки вместе с QA Cat.",
+          quizButton: "Пройти тест знаний",
+        }
+      : {
+          progressTitle: "Your learning progress",
+          progressDescription:
+            "Continue learning, review mistakes and improve your result.",
+          studied: "Questions studied",
+          best: "Best result",
+          attempts: "Attempts",
+          mistakes: "To review",
+          continueLearning: "Continue learning",
+          quizTitle: "QA Knowledge Quiz",
+          quizDescription:
+            "Test your knowledge, study explanations, save progress and review mistakes with QA Cat.",
+          quizButton: "Start knowledge quiz",
+        };
 
   const tools = [
     {
@@ -27,14 +71,8 @@ function HomePage() {
       path: "/interview",
     },
     {
-      title:
-        language === "ru"
-          ? "Тест знаний QA"
-          : "QA Knowledge Quiz",
-      description:
-        language === "ru"
-          ? "Проверяй знания, изучай объяснения, сохраняй прогресс и повторяй ошибки вместе с QA Cat."
-          : "Test your knowledge, study explanations, save progress and review mistakes with QA Cat.",
+      title: labels.quizTitle,
+      description: labels.quizDescription,
       path: "/quiz",
     },
   ];
@@ -61,12 +99,98 @@ function HomePage() {
             to="/quiz"
             className="mt-6 inline-flex rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300"
           >
-            {language === "ru"
-              ? "Пройти тест знаний"
-              : "Start knowledge quiz"}
+            {labels.quizButton}
           </Link>
         </div>
       </div>
+
+      <article className="mb-8 rounded-2xl border border-cyan-400/30 bg-cyan-400/5 p-5 sm:mb-12 sm:rounded-3xl sm:p-7">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
+              QA Buddy Progress
+            </p>
+
+            <h2 className="text-2xl font-bold sm:text-3xl">
+              {labels.progressTitle}
+            </h2>
+
+            <p className="mt-2 text-slate-400">
+              {labels.progressDescription}
+            </p>
+          </div>
+
+          <Link
+            to="/quiz"
+            className="inline-flex justify-center rounded-xl border border-cyan-400 px-5 py-3 font-bold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
+          >
+            {labels.continueLearning}
+          </Link>
+        </div>
+
+        <div className="mb-6">
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <span className="text-sm text-slate-300">
+              {labels.studied}
+            </span>
+
+            <span className="font-bold text-cyan-300">
+              {studiedCount} / {quizQuestions.length}
+            </span>
+          </div>
+
+          <div className="h-3 overflow-hidden rounded-full bg-slate-800">
+            <div
+              className="h-full rounded-full bg-cyan-400 transition-all"
+              style={{
+                width: `${learningPercentage}%`,
+              }}
+            />
+          </div>
+
+          <p className="mt-2 text-right text-sm text-slate-500">
+            {learningPercentage}%
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="rounded-2xl bg-slate-950 p-4">
+            <p className="text-sm text-slate-400">
+              {labels.best}
+            </p>
+            <p className="mt-2 text-2xl font-black text-cyan-400">
+              {quizProgress.bestPercentage}%
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-slate-950 p-4">
+            <p className="text-sm text-slate-400">
+              {labels.attempts}
+            </p>
+            <p className="mt-2 text-2xl font-bold">
+              {quizProgress.totalAttempts}
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-slate-950 p-4">
+            <p className="text-sm text-slate-400">
+              {labels.studied}
+            </p>
+            <p className="mt-2 text-2xl font-bold">
+              {studiedCount}
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-slate-950 p-4">
+            <p className="text-sm text-slate-400">
+              {labels.mistakes}
+            </p>
+            <p className="mt-2 text-2xl font-bold">
+              {quizProgress.wrongQuestionIds.length}
+            </p>
+          </div>
+        </div>
+      </article>
 
       <div className="mb-5 sm:mb-6">
         <h2 className="text-2xl font-bold sm:text-3xl">

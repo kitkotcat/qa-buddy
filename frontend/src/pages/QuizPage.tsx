@@ -284,8 +284,8 @@ function QuizPage() {
                 {labels.questionsCount}
               </p>
 
-              <div className="grid grid-cols-2 gap-3">
-                {[5, 10].map((count) => (
+              <div className="grid grid-cols-3 gap-3">
+                {[5, 10, 20].map((count) => (
                   <button
                     key={count}
                     type="button"
