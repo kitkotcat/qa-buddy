@@ -72,11 +72,11 @@ function Header() {
         <div className="flex items-center justify-between gap-3">
           <NavLink
             to="/"
-            className="shrink-0 text-xl font-black tracking-tight sm:text-2xl"
+            className="shrink-0 text-lg font-black tracking-tight sm:text-xl lg:text-2xl"
           >
             <span className="text-white">QA</span>{" "}
             <span className="text-cyan-400">
-              Buddy
+              Cat Buddy
             </span>
           </NavLink>
 

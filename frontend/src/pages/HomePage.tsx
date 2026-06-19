@@ -111,7 +111,7 @@ function HomePage() {
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
-              QA Buddy Progress
+              QA Cat Buddy Progress
             </p>
 
             <h2 className="text-2xl font-bold sm:text-3xl">

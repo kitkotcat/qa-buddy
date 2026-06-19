@@ -34,7 +34,7 @@ export const translations = {
       search: "Search",
     },
     home: {
-      badge: "QA Buddy MVP",
+      badge: "QA Cat Buddy MVP",
       title: "Your personal QA practice assistant",
       description:
         "Generate bug reports, create test cases, use QA checklists and prepare for interviews in one place.",
@@ -54,7 +54,7 @@ export const translations = {
       openTool: "Open tool",
     },
     bugReports: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Bug Report Generator",
       description:
         "Create a structured bug report for manual testing. Fill in the fields and generate a clean report.",
@@ -66,7 +66,7 @@ export const translations = {
       clearButton: "Clear form",
       copyButton: "Copy report",
       resultTitle: "Generated bug report",
-      projectNamePlaceholder: "QA Buddy",
+      projectNamePlaceholder: "QA Cat Buddy",
       environmentPlaceholder: "Chrome, macOS, local environment",
       summaryPlaceholder: "Short description of the issue",
       preconditionsPlaceholder: "User is logged in and opened the page",
@@ -77,7 +77,7 @@ export const translations = {
       success: "Bug report generated successfully.",
     },
     testCases: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Test Case Generator",
       description:
         "Create structured test cases for features and requirements.",
@@ -99,7 +99,7 @@ export const translations = {
       success: "Test case generated successfully.",
     },
     checklists: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Checklist Library",
       description:
         "Use QA checklists for common testing areas. Mark completed items and copy checklist content.",
@@ -120,7 +120,7 @@ export const translations = {
         "Use checklists during smoke testing, regression testing and feature testing. They help avoid missing important checks.",
     },
     interview: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Interview Trainer",
       description:
         "Practice QA interview questions by category. Learn short answers for quick interviews and detailed answers for deeper preparation.",
@@ -145,9 +145,9 @@ export const translations = {
     },
     about: {
       badge: "About Project",
-      title: "About QA Buddy",
+      title: "About QA Cat Buddy",
       description:
-        "QA Buddy is a fullstack portfolio project for beginner QA engineers.",
+        "QA Cat Buddy is a fullstack portfolio project for beginner QA engineers.",
       goalTitle: "Project goal",
       goalText:
         "The goal of the project is to demonstrate practical skills in manual QA, API testing, frontend development, backend development, automated backend testing and GitHub workflow.",
@@ -197,7 +197,7 @@ export const translations = {
       search: "Поиск",
     },
     home: {
-      badge: "QA Buddy MVP",
+      badge: "QA Cat Buddy MVP",
       title: "Твой личный помощник для практики QA",
       description:
         "Создавай баг-репорты, тест-кейсы, используй QA чек-листы и готовься к интервью в одном приложении.",
@@ -217,7 +217,7 @@ export const translations = {
       openTool: "Открыть инструмент",
     },
     bugReports: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Генератор баг-репортов",
       description:
         "Создай структурированный баг-репорт для ручного тестирования. Заполни поля и получи аккуратный отчёт.",
@@ -229,7 +229,7 @@ export const translations = {
       clearButton: "Очистить форму",
       copyButton: "Скопировать отчёт",
       resultTitle: "Сгенерированный баг-репорт",
-      projectNamePlaceholder: "QA Buddy",
+      projectNamePlaceholder: "QA Cat Buddy",
       environmentPlaceholder: "Chrome, macOS, local environment",
       summaryPlaceholder: "Краткое описание проблемы",
       preconditionsPlaceholder: "Пользователь авторизован и открыл страницу",
@@ -240,7 +240,7 @@ export const translations = {
       success: "Баг-репорт успешно сгенерирован.",
     },
     testCases: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Генератор тест-кейсов",
       description:
         "Создавай структурированные тест-кейсы для фич и требований.",
@@ -263,7 +263,7 @@ export const translations = {
       success: "Тест-кейс успешно сгенерирован.",
     },
     checklists: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Библиотека чек-листов",
       description:
         "Используй QA чек-листы для популярных областей тестирования. Отмечай выполненные пункты и копируй чек-лист.",
@@ -283,7 +283,7 @@ export const translations = {
         "Используй чек-листы во время smoke, regression и feature testing. Они помогают не пропустить важные проверки.",
     },
     interview: {
-      badge: "QA Buddy Tool",
+      badge: "QA Cat Buddy Tool",
       title: "Тренажёр интервью",
       description:
         "Тренируй QA-вопросы по категориям. Используй короткие ответы для быстрых интервью и подробные ответы для глубокой подготовки.",
@@ -307,9 +307,9 @@ export const translations = {
     },
     about: {
       badge: "О проекте",
-      title: "О QA Buddy",
+      title: "О QA Cat Buddy",
       description:
-        "QA Buddy — fullstack-проект для портфолио начинающего QA-инженера.",
+        "QA Cat Buddy — fullstack-проект для портфолио начинающего QA-инженера.",
       goalTitle: "Цель проекта",
       goalText:
         "Цель проекта — показать практические навыки в manual QA, API testing, frontend-разработке, backend-разработке, автоматизированном backend-тестировании и работе с GitHub.",

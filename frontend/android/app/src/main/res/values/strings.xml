@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">QA Buddy</string>
-    <string name="title_activity_main">QA Buddy</string>
+    <string name="app_name">QA Cat Buddy</string>
+    <string name="title_activity_main">QA Cat Buddy</string>
     <string name="package_name">com.kitkotcat.qabuddy</string>
     <string name="custom_url_scheme">com.kitkotcat.qabuddy</string>
 </resources>
