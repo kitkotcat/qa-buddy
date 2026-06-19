@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import qaCatMain from "../assets/qa-cat/qa-cat-main.webp";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -8,9 +9,9 @@ function AboutPage() {
     language === "ru"
       ? {
           badge: "О ПРИЛОЖЕНИИ",
-          title: "О QA Buddy",
+          title: "О QA Cat Buddy",
           description:
-            "QA Buddy — офлайн-помощник для практики и самопроверки знаний QA.",
+            "QA Cat Buddy — офлайн-помощник для практики и самопроверки знаний QA.",
           intro:
             "Приложение помогает начинающим тестировщикам составлять QA-документацию, использовать готовые чек-листы, повторять теорию и готовиться к собеседованиям.",
 
@@ -31,23 +32,24 @@ function AboutPage() {
 
           noticeTitle: "Важно",
           noticeText:
-            "Материалы приложения носят справочный и практический характер. QA Buddy не является официальной образовательной программой, не выдаёт документы об образовании и не гарантирует трудоустройство или успешное прохождение собеседования.",
+            "Материалы приложения носят справочный и практический характер. QA Cat Buddy не является официальной образовательной программой, не выдаёт документы об образовании и не гарантирует трудоустройство или успешное прохождение собеседования.",
 
           developmentTitle: "О разработке",
           developmentText:
-            "QA Buddy развивается как самостоятельный Web- и Android-продукт. Проект включает frontend, backend, API, автоматизированные тесты и ручное тестирование мобильной версии.",
+            "QA Cat Buddy развивается как самостоятельный Web- и Android-продукт. Проект включает frontend, backend, API, автоматизированные тесты и ручное тестирование мобильной версии.",
 
           stackTitle: "Технологический стек",
           versionTitle: "Текущая версия",
           version: "v0.3.0 — Android Offline MVP",
           status:
             "Приложение находится в активной разработке.",
+          privacyLink: "Политика конфиденциальности",
         }
       : {
           badge: "ABOUT THE APP",
-          title: "About QA Buddy",
+          title: "About QA Cat Buddy",
           description:
-            "QA Buddy is an offline assistant for QA practice and knowledge self-assessment.",
+            "QA Cat Buddy is an offline assistant for QA practice and knowledge self-assessment.",
           intro:
             "The application helps beginner testers create QA documentation, use ready-made checklists, review theory and prepare for interviews.",
 
@@ -68,17 +70,18 @@ function AboutPage() {
 
           noticeTitle: "Important",
           noticeText:
-            "The materials are provided for reference and practice purposes. QA Buddy is not an accredited educational programme, does not issue educational certificates and does not guarantee employment or interview success.",
+            "The materials are provided for reference and practice purposes. QA Cat Buddy is not an accredited educational programme, does not issue educational certificates and does not guarantee employment or interview success.",
 
           developmentTitle: "Development",
           developmentText:
-            "QA Buddy is being developed as an independent Web and Android product. The project includes a frontend, backend, API, automated tests and manual mobile testing.",
+            "QA Cat Buddy is being developed as an independent Web and Android product. The project includes a frontend, backend, API, automated tests and manual mobile testing.",
 
           stackTitle: "Technology stack",
           versionTitle: "Current version",
           version: "v0.3.0 — Android Offline MVP",
           status:
             "The application is under active development.",
+          privacyLink: "Privacy Policy",
         };
 
   const stackItems = [
@@ -212,6 +215,13 @@ function AboutPage() {
         <p className="mt-2 text-slate-400">
           {content.status}
         </p>
+
+        <Link
+          to="/privacy"
+          className="mt-5 inline-flex rounded-xl border border-cyan-400 px-5 py-3 font-semibold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
+        >
+          {content.privacyLink}
+        </Link>
       </article>
     </section>
   );

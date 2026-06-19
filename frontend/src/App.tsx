@@ -12,6 +12,7 @@ import ChecklistPage from "./pages/ChecklistPage";
 import InterviewPage from "./pages/InterviewPage";
 import QuizPage from "./pages/QuizPage";
 import AboutPage from "./pages/AboutPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 function App() {
   return (
@@ -84,6 +85,11 @@ function App() {
           <Route
             path="/about"
             element={<AboutPage />}
+          />
+
+          <Route
+            path="/privacy"
+            element={<PrivacyPage />}
           />
 
           <Route
