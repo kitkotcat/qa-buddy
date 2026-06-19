@@ -14,11 +14,32 @@ import {
 } from "../features/quiz/quizProgressService";
 
 type QuizPhase = "setup" | "question" | "result";
+type QuizMode = "regular" | "mistakes";
 
 function shuffleQuestions(
   questions: QuizQuestion[]
 ): QuizQuestion[] {
-  return [...questions].sort(() => Math.random() - 0.5);
+  const shuffledQuestions = [...questions];
+
+  for (
+    let index = shuffledQuestions.length - 1;
+    index > 0;
+    index -= 1
+  ) {
+    const randomIndex = Math.floor(
+      Math.random() * (index + 1)
+    );
+
+    [
+      shuffledQuestions[index],
+      shuffledQuestions[randomIndex],
+    ] = [
+      shuffledQuestions[randomIndex],
+      shuffledQuestions[index],
+    ];
+  }
+
+  return shuffledQuestions;
 }
 
 function QuizPage() {
@@ -48,6 +69,10 @@ function QuizPage() {
           attempts: "Попыток",
           studied: "Изучено вопросов",
           mistakes: "Нужно повторить",
+          reviewMistakes: "Повторить ошибки",
+          noMistakes: "Ошибок для повторения пока нет",
+          categoryProgress: "Прогресс по категориям",
+          reviewMode: "Режим повторения ошибок",
           setupCat:
             "Я QA Cat. Выбирай количество вопросов — проверим твои знания!",
           thinkingCat:
@@ -79,6 +104,10 @@ function QuizPage() {
           attempts: "Attempts",
           studied: "Questions studied",
           mistakes: "Questions to review",
+          reviewMistakes: "Review mistakes",
+          noMistakes: "No mistakes to review yet",
+          categoryProgress: "Category progress",
+          reviewMode: "Mistake review mode",
           setupCat:
             "I am QA Cat. Choose the number of questions and let us test your knowledge!",
           thinkingCat:
@@ -92,6 +121,8 @@ function QuizPage() {
         };
 
   const [phase, setPhase] = useState<QuizPhase>("setup");
+  const [quizMode, setQuizMode] =
+    useState<QuizMode>("regular");
   const [questionCount, setQuestionCount] = useState(5);
   const [sessionQuestions, setSessionQuestions] = useState<
     QuizQuestion[]
@@ -108,12 +139,64 @@ function QuizPage() {
   const isLastQuestion =
     currentIndex === sessionQuestions.length - 1;
 
-  const startQuiz = () => {
-    const nextQuestions = shuffleQuestions(quizQuestions).slice(
-      0,
-      questionCount
+  const categoryStats = Object.entries(
+    progress.categoryProgress
+  )
+    .map(([category, categoryProgress]) => {
+      const categoryQuestion = quizQuestions.find(
+        (question) => question.category === category
+      );
+
+      const percentage =
+        categoryProgress.total === 0
+          ? 0
+          : Math.round(
+              (categoryProgress.correct /
+                categoryProgress.total) *
+                100
+            );
+
+      return {
+        category,
+        title:
+          categoryQuestion?.categoryLabel[
+            quizLanguage
+          ] ?? category,
+        percentage,
+        correct: categoryProgress.correct,
+        total: categoryProgress.total,
+      };
+    })
+    .sort((first, second) =>
+      first.title.localeCompare(second.title)
     );
 
+  const startQuiz = (
+    mode: QuizMode = "regular"
+  ) => {
+    const sourceQuestions =
+      mode === "mistakes"
+        ? quizQuestions.filter((question) =>
+            progress.wrongQuestionIds.includes(
+              question.id
+            )
+          )
+        : quizQuestions;
+
+    if (sourceQuestions.length === 0) {
+      return;
+    }
+
+    const nextQuestionCount =
+      mode === "mistakes"
+        ? Math.min(sourceQuestions.length, 10)
+        : questionCount;
+
+    const nextQuestions = shuffleQuestions(
+      sourceQuestions
+    ).slice(0, nextQuestionCount);
+
+    setQuizMode(mode);
     setSessionQuestions(nextQuestions);
     setCurrentIndex(0);
     setSelectedOption(null);
@@ -137,7 +220,15 @@ function QuizPage() {
     setAnswers(nextAnswers);
 
     if (isLastQuestion) {
-      const nextProgress = saveQuizResult(nextAnswers);
+      const nextProgress = saveQuizResult(
+        nextAnswers,
+        {
+          countAttempt: quizMode === "regular",
+          updateBestResult:
+            quizMode === "regular",
+        }
+      );
+
       setProgress(nextProgress);
       setPhase("result");
       return;
@@ -213,10 +304,23 @@ function QuizPage() {
 
             <button
               type="button"
-              onClick={startQuiz}
+              onClick={() => startQuiz("regular")}
               className="mt-7 w-full rounded-xl bg-cyan-400 px-5 py-4 font-bold text-slate-950 transition hover:bg-cyan-300"
             >
               {labels.start}
+            </button>
+
+            <button
+              type="button"
+              disabled={
+                progress.wrongQuestionIds.length === 0
+              }
+              onClick={() => startQuiz("mistakes")}
+              className="mt-3 w-full rounded-xl border border-cyan-400 px-5 py-4 font-bold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950 disabled:cursor-not-allowed disabled:border-slate-700 disabled:text-slate-500 disabled:hover:bg-transparent"
+            >
+              {progress.wrongQuestionIds.length > 0
+                ? `${labels.reviewMistakes} (${progress.wrongQuestionIds.length})`
+                : labels.noMistakes}
             </button>
           </article>
 
@@ -258,6 +362,43 @@ function QuizPage() {
                   {progress.wrongQuestionIds.length}
                 </p>
               </div>
+
+              {categoryStats.length > 0 && (
+                <div className="rounded-2xl bg-slate-950 p-4">
+                  <p className="mb-4 text-sm font-semibold text-slate-300">
+                    {labels.categoryProgress}
+                  </p>
+
+                  <div className="grid gap-4">
+                    {categoryStats.map((category) => (
+                      <div key={category.category}>
+                        <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+                          <span className="text-slate-300">
+                            {category.title}
+                          </span>
+
+                          <span className="font-semibold text-cyan-300">
+                            {category.percentage}%
+                          </span>
+                        </div>
+
+                        <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+                          <div
+                            className="h-full rounded-full bg-cyan-400 transition-all"
+                            style={{
+                              width: `${category.percentage}%`,
+                            }}
+                          />
+                        </div>
+
+                        <p className="mt-1 text-xs text-slate-500">
+                          {category.correct} / {category.total}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </article>
         </div>
@@ -279,6 +420,12 @@ function QuizPage() {
               {sessionQuestions.length}
             </span>
           </div>
+
+          {quizMode === "mistakes" && (
+            <p className="mb-4 rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm font-semibold text-amber-300">
+              {labels.reviewMode}
+            </p>
+          )}
 
           <QACat
             mood="thinking"
@@ -382,13 +529,26 @@ function QuizPage() {
             {percentage}%
           </p>
 
-          <button
-            type="button"
-            onClick={() => setPhase("setup")}
-            className="mt-8 w-full rounded-xl bg-cyan-400 px-5 py-4 font-bold text-slate-950 transition hover:bg-cyan-300"
-          >
-            {labels.restart}
-          </button>
+          <div className="mt-8 grid gap-3">
+            <button
+              type="button"
+              onClick={() => setPhase("setup")}
+              className="w-full rounded-xl bg-cyan-400 px-5 py-4 font-bold text-slate-950 transition hover:bg-cyan-300"
+            >
+              {labels.restart}
+            </button>
+
+            {progress.wrongQuestionIds.length > 0 && (
+              <button
+                type="button"
+                onClick={() => startQuiz("mistakes")}
+                className="w-full rounded-xl border border-cyan-400 px-5 py-4 font-bold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
+              >
+                {labels.reviewMistakes} (
+                {progress.wrongQuestionIds.length})
+              </button>
+            )}
+          </div>
         </article>
       )}
     </section>

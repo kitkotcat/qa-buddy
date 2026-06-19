@@ -27,6 +27,11 @@ export type QuizProgress = {
   lastCompletedAt: string | null;
 };
 
+export type SaveQuizResultOptions = {
+  countAttempt?: boolean;
+  updateBestResult?: boolean;
+};
+
 export const initialQuizProgress: QuizProgress = {
   totalAttempts: 0,
   bestPercentage: 0,
@@ -39,19 +44,40 @@ export const initialQuizProgress: QuizProgress = {
 };
 
 export function loadQuizProgress(): QuizProgress {
-  return getStorageItem<QuizProgress>(
+  const storedProgress = getStorageItem<Partial<QuizProgress>>(
     QUIZ_PROGRESS_KEY,
     initialQuizProgress
   );
+
+  return {
+    ...initialQuizProgress,
+    ...storedProgress,
+    studiedQuestionIds:
+      storedProgress.studiedQuestionIds ?? [],
+    wrongQuestionIds:
+      storedProgress.wrongQuestionIds ?? [],
+    categoryProgress:
+      storedProgress.categoryProgress ?? {},
+  };
 }
 
 export function saveQuizResult(
-  answers: QuizAnswerResult[]
+  answers: QuizAnswerResult[],
+  options: SaveQuizResultOptions = {}
 ): QuizProgress {
+  const {
+    countAttempt = true,
+    updateBestResult = true,
+  } = options;
+
   const currentProgress = loadQuizProgress();
 
-  const score = answers.filter((answer) => answer.isCorrect).length;
+  const score = answers.filter(
+    (answer) => answer.isCorrect
+  ).length;
+
   const total = answers.length;
+
   const percentage =
     total === 0 ? 0 : Math.round((score / total) * 100);
 
@@ -76,28 +102,41 @@ export function saveQuizResult(
       wrongQuestionIds.add(answer.questionId);
     }
 
-    const currentCategory = categoryProgress[answer.category] ?? {
+    const currentCategory = categoryProgress[
+      answer.category
+    ] ?? {
       correct: 0,
       total: 0,
     };
 
     categoryProgress[answer.category] = {
       correct:
-        currentCategory.correct + (answer.isCorrect ? 1 : 0),
+        currentCategory.correct +
+        (answer.isCorrect ? 1 : 0),
       total: currentCategory.total + 1,
     };
   });
 
   const nextProgress: QuizProgress = {
-    totalAttempts: currentProgress.totalAttempts + 1,
-    bestPercentage: Math.max(
-      currentProgress.bestPercentage,
-      percentage
-    ),
+    totalAttempts:
+      currentProgress.totalAttempts +
+      (countAttempt ? 1 : 0),
+
+    bestPercentage: updateBestResult
+      ? Math.max(
+          currentProgress.bestPercentage,
+          percentage
+        )
+      : currentProgress.bestPercentage,
+
     lastScore: score,
     lastTotal: total,
-    studiedQuestionIds: Array.from(studiedQuestionIds),
-    wrongQuestionIds: Array.from(wrongQuestionIds),
+    studiedQuestionIds: Array.from(
+      studiedQuestionIds
+    ),
+    wrongQuestionIds: Array.from(
+      wrongQuestionIds
+    ),
     categoryProgress,
     lastCompletedAt: new Date().toISOString(),
   };
