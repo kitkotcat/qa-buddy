@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import QAThemeBackground from "../components/QAThemeBackground";
+import LearningGoalBanner from "../components/LearningGoalBanner";
 import { useLanguage } from "../i18n/LanguageContext";
 import { quizQuestions } from "../features/quiz/quizQuestions";
 import { loadQuizProgress } from "../features/quiz/quizProgressService";
@@ -103,6 +104,8 @@ function HomePage() {
           </Link>
         </div>
       </div>
+
+      <LearningGoalBanner />
 
       <article className="mb-8 rounded-2xl border border-cyan-400/30 bg-cyan-400/5 p-5 sm:mb-12 sm:rounded-3xl sm:p-7">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
