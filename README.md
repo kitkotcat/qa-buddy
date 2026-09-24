@@ -15,7 +15,16 @@
 
 QA Buddy is a fullstack pet-project for beginner QA engineers.
 
-The application helps junior QA engineers create bug reports, generate test cases, use QA checklists and prepare for QA interviews.
+The application helps junior QA engineers create bug reports, generate test cases, use QA checklists, prepare for QA interviews and work with the companion QA Buddy Recorder browser extension.
+
+## QA Buddy Ecosystem
+
+QA Buddy is now split into two connected applications:
+
+- **QA Buddy** — the main learning and QA documentation application.
+- **QA Buddy Recorder** — the browser-extension companion for recording reproduction steps and QA evidence: https://github.com/kitkotcat/qa-buddy-recorder
+
+They are maintained as one product ecosystem with separate repositories so the web app and browser extension can evolve independently.
 
 ## Project Goal
 
