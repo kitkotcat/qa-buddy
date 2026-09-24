@@ -34,6 +34,9 @@ function HomePage() {
           quizDescription:
             "Проверяй знания, изучай объяснения, сохраняй прогресс и повторяй ошибки вместе с QA Cat.",
           quizButton: "Пройти тест знаний",
+          recorderTitle: "QA Buddy Recorder",
+          recorderDescription:
+            "Записывай шаги воспроизведения бага прямо в браузере и собирай QA-доказательства.",
         }
       : {
           progressTitle: "Your learning progress",
@@ -48,6 +51,9 @@ function HomePage() {
           quizDescription:
             "Test your knowledge, study explanations, save progress and review mistakes with QA Cat.",
           quizButton: "Start knowledge quiz",
+          recorderTitle: "QA Buddy Recorder",
+          recorderDescription:
+            "Record bug reproduction steps directly in the browser and collect QA evidence.",
         };
 
   const tools = [
@@ -75,6 +81,11 @@ function HomePage() {
       title: labels.quizTitle,
       description: labels.quizDescription,
       path: "/quiz",
+    },
+    {
+      title: labels.recorderTitle,
+      description: labels.recorderDescription,
+      path: "/recorder",
     },
   ];
 
