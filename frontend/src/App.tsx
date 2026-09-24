@@ -13,6 +13,7 @@ import InterviewPage from "./pages/InterviewPage";
 import QuizPage from "./pages/QuizPage";
 import AboutPage from "./pages/AboutPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import RecorderPage from "./pages/RecorderPage";
 
 function App() {
   return (
@@ -80,6 +81,11 @@ function App() {
           <Route
             path="/quiz"
             element={<QuizPage />}
+          />
+
+          <Route
+            path="/recorder"
+            element={<RecorderPage />}
           />
 
           <Route
