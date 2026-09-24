@@ -1,0 +1,51 @@
+name: QA Buddy Recorder build
+
+on:
+  push:
+    branches:
+      - feature/recorder-mvp
+    paths:
+      - "extension/**"
+      - ".github/workflows/extension-build.yml"
+  pull_request:
+    paths:
+      - "extension/**"
+      - ".github/workflows/extension-build.yml"
+
+jobs:
+  build-extension:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: extension
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: extension/package.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Verify required files
+        run: |
+          test -f dist/manifest.json
+          test -f dist/popup.html
+          test -f dist/scripts/background.js
+          test -f dist/scripts/content.js
+
+      - name: Upload unpacked extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-buddy-recorder-unpacked
+          path: extension/dist
