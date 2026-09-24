@@ -39,6 +39,10 @@ function Header() {
           : "Knowledge Quiz",
     },
     {
+      to: "/recorder",
+      label: "Recorder",
+    },
+    {
       to: "/about",
       label: t("nav.about"),
     },
