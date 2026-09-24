@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "QA Buddy Recorder",
+  "version": "0.1.0",
+  "description": "Record manual QA steps and turn them into structured QA evidence.",
+  "permissions": ["storage", "activeTab", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "QA Buddy Recorder",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
