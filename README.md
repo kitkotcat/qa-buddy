@@ -1,237 +1,194 @@
-# QA Buddy
+# QA Buddy — QA Portfolio Project
 
-<p align="left">
-  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img alt="Pytest" src="https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" />
-  <img alt="Version" src="https://img.shields.io/badge/Version-v0.1.0-orange?style=for-the-badge" />
-  <img alt="Status" src="https://img.shields.io/badge/Status-MVP-blueviolet?style=for-the-badge" />
-  <img alt="Portfolio" src="https://img.shields.io/badge/Portfolio_Project-Junior_QA-success?style=for-the-badge" />
-</p>
+QA Buddy — учебно-практический проект, в котором я отрабатываю полный цикл QA для web, API и Android-приложения: от требований и тест-дизайна до API/backend-проверок, регресса, smoke и документации.
 
+Проект включает web-версию, FastAPI backend, Android offline MVP и отдельный Recorder MVP для фиксации шагов воспроизведения.
 
-QA Buddy is a fullstack pet-project for beginner QA engineers.
+## Что этот проект показывает как QA-портфолио
 
-The application helps junior QA engineers create bug reports, generate test cases, use QA checklists and prepare for QA interviews.
+- функциональное тестирование web-приложения;
+- REST API / backend testing;
+- positive / negative scenarios;
+- validation и error handling;
+- test design;
+- smoke / regression / retest;
+- проверку локального хранения данных;
+- bilingual RU/EN checks;
+- Android smoke и offline testing;
+- работу с Swagger / OpenAPI и Chrome DevTools;
+- backend autotests на Python + Pytest;
+- подготовку QA-документации.
 
-## Project Goal
+## QA coverage
 
-The main goal of QA Buddy is to demonstrate practical skills in:
+Backend покрыт Pytest-тестами с использованием FastAPI TestClient.
 
-- manual QA documentation
-- API testing
-- frontend development
-- backend development
-- automated backend testing
-- Git and GitHub workflow
+Проверяются:
 
-## Tech Stack
+- health endpoint;
+- генерация bug reports;
+- генерация test cases;
+- checklist endpoints;
+- interview endpoints;
+- bilingual backend data;
+- validation errors;
+- not found / 404 scenarios.
 
-### Frontend
+Тесты находятся в [`backend/tests`](backend/tests).
 
-- React
-- TypeScript
-- Tailwind CSS
-- Vite
-- React Router
+### Android / Offline QA Gate
 
-### Backend
+Для Android offline MVP были выполнены:
 
-- Python
-- FastAPI
-- Pydantic
-- Uvicorn
-- JSON files as temporary storage
+- frontend production build;
+- Android Gradle build;
+- установка APK;
+- Android smoke testing;
+- offline testing.
 
-### Testing
+Подробнее: [`RELEASE_NOTES_v0.3.0.md`](RELEASE_NOTES_v0.3.0.md).
 
-- Pytest
-- FastAPI TestClient
-- Swagger
-- Browser testing
-- DevTools
+## QA-документация
 
-## Implemented Features
+В репозитории есть отдельные QA-артефакты:
+
+- [Requirements](docs/requirements_v1.md)
+- [Test Plan](docs/test_plan.md)
+- [API Testing](docs/api_testing.md)
+- [Test Cases](docs/test_cases.md)
+- [Bug Reports](docs/bug_reports.md)
+- [Release Notes](docs/release_notes.md)
+
+## Функциональность приложения
 
 ### Bug Report Generator
 
-The user can fill in bug report fields and generate a structured bug report.
+Позволяет сформировать структурированный bug report с environment, summary, preconditions, steps to reproduce, actual/expected result, severity и priority.
 
-Fields:
-
-- project name
-- environment
-- summary
-- preconditions
-- steps to reproduce
-- actual result
-- expected result
-- severity
-- priority
-- attachment link
+Поддерживаются сохранение результатов и экспорт в Markdown.
 
 ### Test Case Generator
 
-The user can generate a structured test case.
+Формирует test case с requirement, preconditions, steps, expected result, test type и priority.
 
-Fields:
-
-- feature name
-- requirement
-- preconditions
-- steps
-- expected result
-- test type
-- priority
+Поддерживаются сохранение результатов и экспорт в Markdown.
 
 ### Checklist Library
 
-The user can open ready-made QA checklists, mark items as completed, reset progress and copy checklist content.
+Библиотека QA-чек-листов с сохранением прогресса, сбросом состояния и поиском.
 
-Current checklist categories:
+Примеры категорий:
 
-- Login / Registration
-- Search
-- Cart
-- Checkout
-- API Testing
-- Forms Validation
-- Mobile App
+- Login / Registration;
+- Search;
+- Cart;
+- Checkout;
+- API Testing;
+- Forms Validation;
+- Mobile App.
 
 ### Interview Trainer
 
-The user can practice QA interview questions by category.
+Тренажёр вопросов для QA-собеседований с короткими и подробными ответами, категориями и RU/EN интерфейсом.
 
-Current categories:
+### QA Knowledge Quiz
 
-- Theory QA
-- Bug reports
-- Test cases
-- HTTP
-- API testing
-- SQL basics
-- DevTools
-- Postman
-- English interview
+В Android offline версии есть квиз по QA с режимами на 5, 10 и 20 вопросов, статистикой по категориям и разбором ошибок.
 
-## API Endpoints
+## QA Buddy Recorder — MVP
 
-Health check:
+В репозитории также есть ранний MVP Chrome/Edge Manifest V3 расширения для фиксации ручных шагов воспроизведения.
 
-- GET /api/health
+Текущий MVP умеет:
 
-Bug reports:
+- start / pause / resume / stop recording;
+- фиксировать стартовую страницу;
+- записывать клики по интерактивным элементам;
+- отмечать изменение form fields без сохранения введённых значений;
+- определять URL changes, включая базовую SPA-навигацию;
+- хранить текущую сессию в `chrome.storage.local`;
+- сохранять до 500 шагов за сессию.
 
-- POST /api/bug-reports/generate
+Подробнее: [`extension/README.md`](extension/README.md).
 
-Test cases:
+## API endpoints
 
-- POST /api/test-cases/generate
+Основные backend endpoints:
 
-Checklists:
+```text
+GET  /api/health
+POST /api/bug-reports/generate
+POST /api/test-cases/generate
+GET  /api/checklists
+GET  /api/checklists/{checklist_id}
+GET  /api/interview/questions
+GET  /api/interview/questions/{question_id}
+GET  /api/interview/random
+```
 
-- GET /api/checklists
-- GET /api/checklists/{checklist_id}
+Swagger доступен локально после запуска backend:
 
-Interview:
+```text
+http://127.0.0.1:8000/docs
+```
 
-- GET /api/interview/questions
-- GET /api/interview/questions/{question_id}
-- GET /api/interview/random
+## System under test
 
-## How to Run Backend
+| Часть | Технологии |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Backend | Python, FastAPI, Pydantic, Uvicorn |
+| Backend tests | Pytest, FastAPI TestClient |
+| Android | Capacitor, Gradle |
+| Local data | localStorage, offline data |
+| API documentation | Swagger / OpenAPI |
+| Recorder MVP | Chrome/Edge Manifest V3, TypeScript |
 
-Go to backend folder:
+Технологический стек здесь рассматривается прежде всего как **система под тестированием и среда для QA-практики**.
 
-    cd backend
+## Как запустить backend
 
-Create and activate virtual environment:
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --reload-dir app
+```
 
-    python3 -m venv .venv
-    source .venv/bin/activate
+Backend:
 
-Install dependencies:
+```text
+http://127.0.0.1:8000
+```
 
-    pip install -r requirements.txt
+## Как запустить frontend
 
-Run backend:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-    uvicorn app.main:app --reload --reload-dir app
+## Как запустить backend tests
 
-Backend URL:
+```bash
+cd backend
+source .venv/bin/activate
+pytest
+```
 
-    http://127.0.0.1:8000
+## Структура проекта
 
-Swagger:
-
-    http://127.0.0.1:8000/docs
-
-## How to Run Frontend
-
-Go to frontend folder:
-
-    cd frontend
-
-Install dependencies:
-
-    npm install
-
-Run frontend:
-
-    npm run dev
-
-Frontend URL will be shown in terminal, for example:
-
-    http://localhost:5173
-
-## How to Run Tests
-
-Go to backend folder:
-
-    cd backend
-    source .venv/bin/activate
-    pytest
-
-Current backend tests cover:
-
-- health endpoint
-- bug report generation
-- test case generation
-- checklist endpoints
-- interview endpoints
-- validation errors
-- 404 errors
-
-## Project Structure
-
-    qa-buddy/
-    ├── backend/
-    │   ├── app/
-    │   │   ├── api/
-    │   │   ├── data/
-    │   │   ├── schemas/
-    │   │   ├── services/
-    │   │   └── main.py
-    │   ├── tests/
-    │   └── requirements.txt
-    │
-    ├── frontend/
-    │   ├── src/
-    │   │   ├── api/
-    │   │   ├── components/
-    │   │   ├── data/
-    │   │   ├── pages/
-    │   │   └── main.tsx
-    │   └── package.json
-    │
-    ├── docs/
-    ├── screenshots/
-    ├── README.md
-    └── .gitignore
-
+```text
+qa-buddy/
+├── backend/       # FastAPI backend + Pytest tests
+├── frontend/      # Web UI + Android/Capacitor project
+├── extension/     # QA Buddy Recorder MVP
+├── docs/          # QA documentation
+├── screenshots/   # UI, Swagger and Pytest evidence
+└── README.md
+```
 
 ## Screenshots
 
@@ -263,66 +220,21 @@ Current backend tests cover:
 
 ![Pytest Result](screenshots/pytest-result.png)
 
+## Текущее состояние
 
-## Documentation
+В `main` находятся:
 
-Project documentation is located in the docs folder:
+- web-приложение;
+- FastAPI backend;
+- QA-документация;
+- backend Pytest tests;
+- Android offline MVP;
+- Recorder MVP;
+- CI build check для extension.
 
-- requirements_v1.md
-- test_plan.md
-- api_testing.md
-- test_cases.md
-- bug_reports.md
-- release_notes.md
+Проект продолжает использоваться как практическая площадка для развития QA-навыков и дальнейшей автоматизации тестирования.
 
-## Current Release
+## Автор
 
-**v0.1.0 — QA Buddy MVP**
-
-This release includes the first stable MVP version of QA Buddy:
-
-- React + TypeScript + Tailwind frontend
-- FastAPI backend
-- Bug Report Generator
-- Test Case Generator
-- Checklist Library
-- Interview Trainer
-- Bilingual UI: English / Russian
-- Bilingual backend data for checklists and interview questions
-- Swagger API documentation
-- Pytest backend tests
-- GitHub documentation and screenshots
-
-## Version 0.2.0 — Persistence & UX
-
-The next version improves user experience and prepares the project for a future offline Android version.
-
-Implemented in the `feature/v0.2.0-persistence-ux` branch:
-
-- persistent checklist progress with localStorage
-- search for checklists
-- search for interview questions
-- saved bug reports
-- saved test cases
-- copy / delete saved documents
-- export generated bug reports to Markdown
-- export generated test cases to Markdown
-
-## Roadmap
-
-Planned improvements:
-
-- add screenshots to README
-- add localStorage for checklist progress ✅
-- add search and filters ✅
-- add more interview questions
-- add export to Markdown ✅
-- add export to PDF
-- add SQLite or PostgreSQL
-- add authentication
-- add deployment
-
-## Author
-
-Katy Peshkun  
-GitHub: kitkotcat
+Екатерина Пешкун  
+GitHub: [@kitkotcat](https://github.com/kitkotcat)
