@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { generateTestCaseApi } from "../api/testCases";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import {
   getStorageItem,
   setStorageItem,

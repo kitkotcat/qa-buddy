@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import qaCatMain from "../assets/qa-cat/qa-cat-main.webp";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 
 function AboutPage() {
   const { language } = useLanguage();

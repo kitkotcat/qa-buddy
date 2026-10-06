@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
-import {
-  NavLink,
-  useLocation,
-} from "react-router-dom";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useLanguage } from "../i18n/useLanguage";
 import LanguageToggle from "./LanguageToggle";
 
 function Header() {
   const { language, t } = useLanguage();
-  const location = useLocation();
-
   const [isMenuOpen, setIsMenuOpen] =
     useState(false);
 
@@ -44,10 +39,6 @@ function Header() {
     },
   ];
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
-
   const getNavLinkClass = (
     isActive: boolean
   ) =>
@@ -72,6 +63,7 @@ function Header() {
         <div className="flex items-center justify-between gap-3">
           <NavLink
             to="/"
+            onClick={() => setIsMenuOpen(false)}
             className="shrink-0 text-lg font-black tracking-tight sm:text-xl lg:text-2xl"
           >
             <span className="text-white">QA</span>{" "}
@@ -86,6 +78,7 @@ function Header() {
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     getNavLinkClass(isActive)
                   }
@@ -152,6 +145,7 @@ function Header() {
               <NavLink
                 key={item.to}
                 to={item.to}
+                onClick={() => setIsMenuOpen(false)}
                 className={({ isActive }) =>
                   getNavLinkClass(isActive)
                 }

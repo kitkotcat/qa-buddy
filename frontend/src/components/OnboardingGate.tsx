@@ -7,7 +7,7 @@ import LanguageToggle from "./LanguageToggle";
 import beginnerCat from "../assets/qa-cat/qa-cat-beginner.webp";
 import learningCat from "../assets/qa-cat/qa-cat-learning.webp";
 import interviewCat from "../assets/qa-cat/qa-cat-interview.webp";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import {
   completeOnboarding,
   loadOnboardingProfile,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import QACat, { type QACatMood } from "../components/QACat";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import {
   quizQuestions,
   type QuizLanguage,

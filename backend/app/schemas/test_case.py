@@ -8,6 +8,8 @@ Priority = Literal["High", "Medium", "Low"]
 
 
 class TestCaseRequest(BaseModel):
+    __test__ = False
+
     feature_name: str = Field(..., min_length=1)
     requirement: str = Field(..., min_length=1)
     preconditions: str | None = None
@@ -18,6 +20,8 @@ class TestCaseRequest(BaseModel):
 
 
 class TestCaseResponse(BaseModel):
+    __test__ = False
+
     formatted_test_case: str
     test_case_id: str
     feature_name: str
