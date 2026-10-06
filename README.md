@@ -1,53 +1,72 @@
 # QA Buddy — QA Portfolio Project
 
-QA Buddy — учебно-практический проект для отработки полного QA workflow на web, REST API/backend и Android: от требований и test design до smoke, regression, API-проверок, automation и release documentation.
+[![QA Buddy CI](https://github.com/kitkotcat/qa-buddy/actions/workflows/ci.yml/badge.svg)](https://github.com/kitkotcat/qa-buddy/actions/workflows/ci.yml)
+![React + TypeScript](https://img.shields.io/badge/React%20%2B%20TypeScript-Frontend-20232A?logo=react)
+![FastAPI + Pytest](https://img.shields.io/badge/FastAPI%20%2B%20Pytest-Backend-009688?logo=fastapi)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Проект включает React web-приложение, FastAPI backend, Android offline MVP и набор QA-артефактов. Recorder вынесен из этого репозитория и продолжил развитие как отдельный проект **QA Cat Recorder**.
+QA Buddy — учебно-практический fullstack-проект для демонстрации полного QA workflow: требования, test design, manual testing, REST API, backend automation, Android/offline checks и CI quality gate.
 
-## Что проект показывает как QA-портфолио
+В интерфейсе используется бренд **QA Cat Buddy**. Приложение работает на русском и английском языках; основной portfolio-flow показан на русском.
 
-- functional / smoke / regression / retest testing;
-- REST API и backend testing;
-- positive / negative scenarios;
-- validation и error handling;
-- test design и traceable QA documentation;
-- localStorage / offline checks;
-- bilingual RU/EN checks;
-- Android smoke и offline testing;
-- Swagger / OpenAPI и Chrome DevTools;
-- backend autotests на Python + Pytest;
-- CI quality gate для frontend и backend.
+![QA Buddy — главная страница](screenshots/home-page.png)
 
-## QA coverage
+## QA focus
 
-Backend покрыт Pytest-тестами с использованием FastAPI TestClient.
+| Слой | Что покрыто |
+|---|---|
+| Web | functional, smoke, regression, retest, localization, localStorage |
+| REST API | positive/negative scenarios, validation, status codes, 404 |
+| Backend | 15 Pytest tests через FastAPI TestClient |
+| Android | build, installation, smoke, offline/persistence checks |
+| CI | dependency audit, ESLint, production build, Pytest |
+| QA artifacts | requirements, test plan, test cases, bug reports, API testing, release notes |
 
-Проверяются:
+## Что умеет приложение
 
-- health endpoint;
-- генерация bug reports;
-- генерация test cases;
+- **Bug Report Generator** — формирует структурированные баг-репорты и поддерживает сохранение/Markdown export.
+- **Test Case Generator** — создаёт тест-кейсы по требованию, типу и приоритету.
+- **Checklist Library** — готовые QA-чек-листы с поиском и сохранением прогресса.
+- **Interview Trainer** — вопросы по QA, HTTP, API, SQL, DevTools, Postman и интервью.
+- **QA Knowledge Quiz** — учебный quiz с прогрессом и разбором ошибок.
+- **RU/EN** — переключение языка интерфейса и backend data.
+
+## Architecture
+
+```text
+React + TypeScript + Vite
+          |
+          | REST / JSON
+          v
+     FastAPI backend
+          |
+          +-- QA data / validation
+          +-- Pytest coverage
+
+Capacitor / Android
+          +-- localStorage / offline data
+
+GitHub Actions
+          +-- Frontend: npm audit -> lint -> build
+          +-- Backend: pytest
+```
+
+## Testing & automation
+
+Backend-тесты находятся в [`backend/tests`](backend/tests) и проверяют:
+
+- `GET /api/health`;
+- генерацию bug reports;
+- генерацию test cases;
 - checklist endpoints;
 - interview endpoints;
-- bilingual backend data;
+- RU/EN backend data;
 - validation errors;
 - not found / 404 scenarios.
 
-Тесты находятся в [`backend/tests`](backend/tests).
+CI запускается для `main` и pull requests. Ветка `main` защищена: изменения проходят через PR с обязательными `Frontend quality gate` и `Backend tests`.
 
-### Android / Offline QA Gate
-
-Для Android offline MVP выполнялись:
-
-- frontend production build;
-- Android Gradle build;
-- APK installation;
-- Android smoke testing;
-- offline testing.
-
-Подробнее: [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md).
-
-## QA-документация
+## QA artifacts
 
 - [Requirements](docs/requirements_v1.md)
 - [Test Plan](docs/test_plan.md)
@@ -58,29 +77,28 @@ Backend покрыт Pytest-тестами с использованием FastA
 - [Release Notes v0.3.0](docs/releases/v0.3.0.md)
 - [Privacy Policy RU](docs/legal/PRIVACY_POLICY_RU.md)
 
-## Функциональность приложения
+## Product evidence
 
-### Bug Report Generator
+<table>
+  <tr>
+    <td width="50%"><strong>Bug Report Generator</strong><br><img src="screenshots/bug-report-generator.png" alt="Генератор баг-репортов QA Buddy"></td>
+    <td width="50%"><strong>Test Case Generator</strong><br><img src="screenshots/test-case-generator.png" alt="Генератор тест-кейсов QA Buddy"></td>
+  </tr>
+  <tr>
+    <td width="50%"><strong>Checklist Library</strong><br><img src="screenshots/checklist-library.png" alt="Библиотека чек-листов QA Buddy"></td>
+    <td width="50%"><strong>Interview Trainer</strong><br><img src="screenshots/interview-trainer.png" alt="Тренажёр интервью QA Buddy"></td>
+  </tr>
+</table>
 
-Формирует структурированный bug report с environment, summary, preconditions, steps to reproduce, actual/expected result, severity и priority. Результаты можно сохранять и экспортировать в Markdown.
+## Technical evidence
 
-### Test Case Generator
+### GitHub Actions
 
-Формирует test case с requirement, preconditions, steps, expected result, test type и priority. Результаты можно сохранять и экспортировать в Markdown.
+![QA Buddy CI — success](screenshots/ci-success.png)
 
-### Checklist Library
+### Swagger / OpenAPI
 
-Библиотека QA-чек-листов с поиском, сохранением прогресса и reset состояния.
-
-Примеры категорий: Login / Registration, Search, Cart, Checkout, API Testing, Forms Validation, Mobile App.
-
-### Interview Trainer
-
-Тренажёр вопросов для QA-собеседований с короткими и подробными ответами, категориями и RU/EN интерфейсом.
-
-### QA Knowledge Quiz
-
-Android offline версия содержит QA quiz с режимами на 5, 10 и 20 вопросов, статистикой по категориям и разбором ошибок.
+![QA Buddy Swagger API](screenshots/swagger-api.png)
 
 ## API endpoints
 
@@ -95,25 +113,21 @@ GET  /api/interview/questions/{question_id}
 GET  /api/interview/random
 ```
 
-Swagger после локального запуска backend:
+Swagger после локального запуска backend: `http://127.0.0.1:8000/docs`.
 
-```text
-http://127.0.0.1:8000/docs
-```
-
-## System under test
+## Tech stack
 
 | Часть | Технологии |
 |---|---|
 | Frontend | React, TypeScript, Vite, Tailwind CSS |
 | Backend | Python, FastAPI, Pydantic, Uvicorn |
-| Backend tests | Pytest, FastAPI TestClient |
+| Tests | Pytest, FastAPI TestClient |
 | Android | Capacitor, Gradle |
 | Local data | localStorage / offline data |
-| API documentation | Swagger / OpenAPI |
+| API docs | Swagger / OpenAPI |
 | CI | GitHub Actions |
 
-## Локальный запуск
+## Run locally
 
 ### Backend
 
@@ -135,84 +149,22 @@ npm ci
 npm run dev
 ```
 
-## Quality gate
-
-### Frontend
+## Local quality gate
 
 ```bash
 cd frontend
-npm ci
 npm audit --audit-level=high
 npm run lint
 npm run build
-```
 
-### Backend
-
-```bash
-cd backend
+cd ../backend
 source .venv/bin/activate
 pytest -q
 ```
 
-Тот же frontend/backend gate выполняется в GitHub Actions для `main` и pull requests.
-
-## Структура проекта
-
-```text
-qa-buddy/
-├── .github/workflows/  # CI quality gate
-├── backend/            # FastAPI backend + Pytest tests
-├── frontend/           # Web UI + Android/Capacitor project
-├── docs/               # QA documentation, legal and release notes
-├── screenshots/        # UI, Swagger and Pytest evidence
-├── scripts/            # Release / Android audit helpers
-├── LICENSE
-└── README.md
-```
-
 ## Related project
 
-### QA Cat Recorder
-
-Recorder, который начинался как эксперимент внутри QA Buddy, теперь развивается отдельно как **QA Cat Recorder** — Chrome extension для записи manual QA sessions, Steps, screenshots и Network/Console evidence.
-
-
-## Screenshots
-
-### Home Page
-
-![Home Page](screenshots/home-page.png)
-
-### Bug Report Generator
-
-![Bug Report Generator](screenshots/bug-report-generator.png)
-
-### Test Case Generator
-
-![Test Case Generator](screenshots/test-case-generator.png)
-
-### Checklist Library
-
-![Checklist Library](screenshots/checklist-library.png)
-
-### Interview Trainer
-
-![Interview Trainer](screenshots/interview-trainer.png)
-
-### Swagger API Documentation
-
-![Swagger API Documentation](screenshots/swagger-api.png)
-
-### Pytest Result
-
-![Pytest Result](screenshots/pytest-result.png)
-
-## Текущее состояние
-
-В репозитории остаются только актуальные части QA Buddy: web-приложение, FastAPI backend, Android offline MVP, QA-документация, Pytest tests, screenshots и CI quality gate.
-
-Проект используется как практическая площадка для развития manual QA и test automation навыков.
+**QA Cat Recorder** — отдельный Chrome extension для записи manual QA sessions, Steps, screenshots и Network/Console evidence. Исходники Recorder больше не входят в этот репозиторий.
 
 ## License
 
