@@ -25,3 +25,6 @@ keystore.properties
 docs/release/audit-v*/
 .DS_Store
 *.jks
+
+# Local isolated worktrees
+.worktrees/
