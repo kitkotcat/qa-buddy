@@ -158,7 +158,7 @@ export const translations = {
         "The repository contains requirements, test plan, API testing notes, test cases, bug reports, release notes and screenshots.",
       roadmapTitle: "Roadmap",
       roadmapText:
-        "Next steps: add bilingual backend data, localStorage, search, database, export features and deployment.",
+        "Next steps: expand Playwright/UI automation, add persistent storage where it brings QA value, improve deployment and keep growing regression coverage.",
     },
   },
 
@@ -320,7 +320,7 @@ export const translations = {
         "В репозитории есть requirements, test plan, API testing notes, test cases, bug reports, release notes и screenshots.",
       roadmapTitle: "Roadmap",
       roadmapText:
-        "Следующие шаги: добавить bilingual backend data, localStorage, поиск, базу данных, export-функции и deployment.",
+        "Следующие шаги: расширить Playwright/UI automation, добавить persistence там, где это полезно для QA, улучшить deployment и наращивать regression coverage.",
     },
   },
 } as const;
