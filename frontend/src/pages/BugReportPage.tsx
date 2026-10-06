@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { generateBugReportApi } from "../api/bugReports";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import {
   getStorageItem,
   setStorageItem,

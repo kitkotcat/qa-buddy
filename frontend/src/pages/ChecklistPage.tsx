@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getChecklistsApi } from "../api/checklists";
 import type { Checklist } from "../api/checklists";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import {
   getStorageItem,
   removeStorageItem,
@@ -25,34 +25,34 @@ function ChecklistPage() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    loadChecklists();
-  }, [language]);
+    async function loadChecklists() {
+      setIsLoading(true);
+      setMessage("");
 
-  const loadChecklists = async () => {
-    setIsLoading(true);
-    setMessage("");
+      try {
+        const data = await getChecklistsApi(language);
+        setChecklists(data);
 
-    try {
-      const data = await getChecklistsApi(language);
-      setChecklists(data);
+        if (data.length > 0) {
+          const firstChecklist = data[0];
+          setSelectedChecklist(firstChecklist);
 
-      if (data.length > 0) {
-        const firstChecklist = data[0];
-        setSelectedChecklist(firstChecklist);
+          const savedProgress = getStorageItem<number[]>(
+            getChecklistProgressKey(firstChecklist.id),
+            []
+          );
 
-        const savedProgress = getStorageItem<number[]>(
-          getChecklistProgressKey(firstChecklist.id),
-          []
-        );
-
-        setCheckedItems(savedProgress);
+          setCheckedItems(savedProgress);
+        }
+      } catch {
+        setMessage(t("checklists.loadError"));
+      } finally {
+        setIsLoading(false);
       }
-    } catch {
-      setMessage(t("checklists.loadError"));
-    } finally {
-      setIsLoading(false);
     }
-  };
+
+    void loadChecklists();
+  }, [language, t]);
 
   const filteredChecklists = useMemo(() => {
     const normalizedSearchQuery = searchQuery.trim().toLowerCase();

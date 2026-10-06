@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import QAThemeBackground from "../components/QAThemeBackground";
 import LearningGoalBanner from "../components/LearningGoalBanner";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 import { quizQuestions } from "../features/quiz/quizQuestions";
 import { loadQuizProgress } from "../features/quiz/quizProgressService";
 

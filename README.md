@@ -1,23 +1,22 @@
 # QA Buddy — QA Portfolio Project
 
-QA Buddy — учебно-практический проект, в котором я отрабатываю полный цикл QA для web, API и Android-приложения: от требований и тест-дизайна до API/backend-проверок, регресса, smoke и документации.
+QA Buddy — учебно-практический проект для отработки полного QA workflow на web, REST API/backend и Android: от требований и test design до smoke, regression, API-проверок, automation и release documentation.
 
-Проект включает web-версию, FastAPI backend, Android offline MVP и отдельный Recorder MVP для фиксации шагов воспроизведения.
+Проект включает React web-приложение, FastAPI backend, Android offline MVP и набор QA-артефактов. Recorder вынесен из этого репозитория и продолжил развитие как отдельный проект **QA Cat Recorder**.
 
-## Что этот проект показывает как QA-портфолио
+## Что проект показывает как QA-портфолио
 
-- функциональное тестирование web-приложения;
-- REST API / backend testing;
+- functional / smoke / regression / retest testing;
+- REST API и backend testing;
 - positive / negative scenarios;
 - validation и error handling;
-- test design;
-- smoke / regression / retest;
-- проверку локального хранения данных;
+- test design и traceable QA documentation;
+- localStorage / offline checks;
 - bilingual RU/EN checks;
 - Android smoke и offline testing;
-- работу с Swagger / OpenAPI и Chrome DevTools;
+- Swagger / OpenAPI и Chrome DevTools;
 - backend autotests на Python + Pytest;
-- подготовку QA-документации.
+- CI quality gate для frontend и backend.
 
 ## QA coverage
 
@@ -38,54 +37,42 @@ Backend покрыт Pytest-тестами с использованием FastA
 
 ### Android / Offline QA Gate
 
-Для Android offline MVP были выполнены:
+Для Android offline MVP выполнялись:
 
 - frontend production build;
 - Android Gradle build;
-- установка APK;
+- APK installation;
 - Android smoke testing;
 - offline testing.
 
-Подробнее: [`RELEASE_NOTES_v0.3.0.md`](RELEASE_NOTES_v0.3.0.md).
+Подробнее: [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md).
 
 ## QA-документация
-
-В репозитории есть отдельные QA-артефакты:
 
 - [Requirements](docs/requirements_v1.md)
 - [Test Plan](docs/test_plan.md)
 - [API Testing](docs/api_testing.md)
 - [Test Cases](docs/test_cases.md)
 - [Bug Reports](docs/bug_reports.md)
-- [Release Notes](docs/release_notes.md)
+- [Release Notes v0.1–v0.2](docs/release_notes.md)
+- [Release Notes v0.3.0](docs/releases/v0.3.0.md)
+- [Privacy Policy RU](docs/legal/PRIVACY_POLICY_RU.md)
 
 ## Функциональность приложения
 
 ### Bug Report Generator
 
-Позволяет сформировать структурированный bug report с environment, summary, preconditions, steps to reproduce, actual/expected result, severity и priority.
-
-Поддерживаются сохранение результатов и экспорт в Markdown.
+Формирует структурированный bug report с environment, summary, preconditions, steps to reproduce, actual/expected result, severity и priority. Результаты можно сохранять и экспортировать в Markdown.
 
 ### Test Case Generator
 
-Формирует test case с requirement, preconditions, steps, expected result, test type и priority.
-
-Поддерживаются сохранение результатов и экспорт в Markdown.
+Формирует test case с requirement, preconditions, steps, expected result, test type и priority. Результаты можно сохранять и экспортировать в Markdown.
 
 ### Checklist Library
 
-Библиотека QA-чек-листов с сохранением прогресса, сбросом состояния и поиском.
+Библиотека QA-чек-листов с поиском, сохранением прогресса и reset состояния.
 
-Примеры категорий:
-
-- Login / Registration;
-- Search;
-- Cart;
-- Checkout;
-- API Testing;
-- Forms Validation;
-- Mobile App.
+Примеры категорий: Login / Registration, Search, Cart, Checkout, API Testing, Forms Validation, Mobile App.
 
 ### Interview Trainer
 
@@ -93,27 +80,9 @@ Backend покрыт Pytest-тестами с использованием FastA
 
 ### QA Knowledge Quiz
 
-В Android offline версии есть квиз по QA с режимами на 5, 10 и 20 вопросов, статистикой по категориям и разбором ошибок.
-
-## QA Buddy Recorder — MVP
-
-В репозитории также есть ранний MVP Chrome/Edge Manifest V3 расширения для фиксации ручных шагов воспроизведения.
-
-Текущий MVP умеет:
-
-- start / pause / resume / stop recording;
-- фиксировать стартовую страницу;
-- записывать клики по интерактивным элементам;
-- отмечать изменение form fields без сохранения введённых значений;
-- определять URL changes, включая базовую SPA-навигацию;
-- хранить текущую сессию в `chrome.storage.local`;
-- сохранять до 500 шагов за сессию.
-
-Подробнее: [`extension/README.md`](extension/README.md).
+Android offline версия содержит QA quiz с режимами на 5, 10 и 20 вопросов, статистикой по категориям и разбором ошибок.
 
 ## API endpoints
-
-Основные backend endpoints:
 
 ```text
 GET  /api/health
@@ -126,7 +95,7 @@ GET  /api/interview/questions/{question_id}
 GET  /api/interview/random
 ```
 
-Swagger доступен локально после запуска backend:
+Swagger после локального запуска backend:
 
 ```text
 http://127.0.0.1:8000/docs
@@ -136,17 +105,17 @@ http://127.0.0.1:8000/docs
 
 | Часть | Технологии |
 |---|---|
-| Frontend | React, TypeScript, Vite |
+| Frontend | React, TypeScript, Vite, Tailwind CSS |
 | Backend | Python, FastAPI, Pydantic, Uvicorn |
 | Backend tests | Pytest, FastAPI TestClient |
 | Android | Capacitor, Gradle |
-| Local data | localStorage, offline data |
+| Local data | localStorage / offline data |
 | API documentation | Swagger / OpenAPI |
-| Recorder MVP | Chrome/Edge Manifest V3, TypeScript |
+| CI | GitHub Actions |
 
-Технологический стек здесь рассматривается прежде всего как **система под тестированием и среда для QA-практики**.
+## Локальный запуск
 
-## Как запустить backend
+### Backend
 
 ```bash
 cd backend
@@ -156,39 +125,58 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --reload-dir app
 ```
 
-Backend:
+Backend: `http://127.0.0.1:8000`
 
-```text
-http://127.0.0.1:8000
-```
-
-## Как запустить frontend
+### Frontend
 
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
-## Как запустить backend tests
+## Quality gate
+
+### Frontend
+
+```bash
+cd frontend
+npm ci
+npm audit --audit-level=high
+npm run lint
+npm run build
+```
+
+### Backend
 
 ```bash
 cd backend
 source .venv/bin/activate
-pytest
+pytest -q
 ```
+
+Тот же frontend/backend gate выполняется в GitHub Actions для `main` и pull requests.
 
 ## Структура проекта
 
 ```text
 qa-buddy/
-├── backend/       # FastAPI backend + Pytest tests
-├── frontend/      # Web UI + Android/Capacitor project
-├── extension/     # QA Buddy Recorder MVP
-├── docs/          # QA documentation
-├── screenshots/   # UI, Swagger and Pytest evidence
+├── .github/workflows/  # CI quality gate
+├── backend/            # FastAPI backend + Pytest tests
+├── frontend/           # Web UI + Android/Capacitor project
+├── docs/               # QA documentation, legal and release notes
+├── screenshots/        # UI, Swagger and Pytest evidence
+├── scripts/            # Release / Android audit helpers
+├── LICENSE
 └── README.md
 ```
+
+## Related project
+
+### QA Cat Recorder
+
+Recorder, который начинался как эксперимент внутри QA Buddy, теперь развивается отдельно как **QA Cat Recorder** — Chrome extension для записи manual QA sessions, Steps, screenshots и Network/Console evidence.
+
 
 ## Screenshots
 
@@ -222,17 +210,13 @@ qa-buddy/
 
 ## Текущее состояние
 
-В `main` находятся:
+В репозитории остаются только актуальные части QA Buddy: web-приложение, FastAPI backend, Android offline MVP, QA-документация, Pytest tests, screenshots и CI quality gate.
 
-- web-приложение;
-- FastAPI backend;
-- QA-документация;
-- backend Pytest tests;
-- Android offline MVP;
-- Recorder MVP;
-- CI build check для extension.
+Проект используется как практическая площадка для развития manual QA и test automation навыков.
 
-Проект продолжает использоваться как практическая площадка для развития QA-навыков и дальнейшей автоматизации тестирования.
+## License
+
+MIT — см. [LICENSE](LICENSE).
 
 ## Автор
 

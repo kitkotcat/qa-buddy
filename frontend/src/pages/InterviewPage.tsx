@@ -10,7 +10,7 @@ import {
   getRandomInterviewQuestionApi,
 } from "../api/interview";
 import type { InterviewQuestion } from "../api/interview";
-import { useLanguage } from "../i18n/LanguageContext";
+import { useLanguage } from "../i18n/useLanguage";
 
 function InterviewPage() {
   const { language, t } = useLanguage();

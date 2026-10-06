@@ -14,14 +14,17 @@ node_modules/
 dist/
 npm-debug.log*
 
-# VS Code
-.vscode/
-
-# macOS
-.DS_Store*.jks
+# Android signing / local release data
+*.jks
 *.keystore
 *.p12
 keystore.properties
 docs/release/audit-v*/
+
+# Editors / OS
+.vscode/
 .DS_Store
-*.jks
+
+# Local agent / worktree state
+.worktrees/
+.superpowers/

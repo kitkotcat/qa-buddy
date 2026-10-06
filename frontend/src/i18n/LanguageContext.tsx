@@ -1,7 +1,5 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -9,18 +7,10 @@ import {
 import type { ReactNode } from "react";
 import { translations } from "./translations";
 import type { Language } from "./translations";
-
-type LanguageContextValue = {
-  language: Language;
-  setLanguage: (language: Language) => void;
-  toggleLanguage: () => void;
-  t: (key: string) => string;
-};
+import { LanguageContext } from "./languageContextState";
 
 const LANGUAGE_STORAGE_KEY = "qa-buddy-language";
 
-const LanguageContext =
-  createContext<LanguageContextValue | null>(null);
 
 function getStoredLanguage(): Language {
   try {
@@ -116,16 +106,4 @@ export function LanguageProvider({
       {children}
     </LanguageContext.Provider>
   );
-}
-
-export function useLanguage() {
-  const context = useContext(LanguageContext);
-
-  if (!context) {
-    throw new Error(
-      "useLanguage must be used inside LanguageProvider"
-    );
-  }
-
-  return context;
 }
